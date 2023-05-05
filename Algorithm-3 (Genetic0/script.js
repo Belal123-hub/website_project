@@ -40,12 +40,24 @@ class Route {
     }
 
     mutate() {
-        const indexA = Math.floor(Math.random() * this.cities.length);
-        const indexB = Math.floor(Math.random() * this.cities.length);
-        const temp = this.cities[indexA];
-        this.cities[indexA] = this.cities[indexB];
-        this.cities[indexB] = temp;
+        var indexA = Math.floor(Math.random() * this.cities.length);
+        var indexB = Math.floor(Math.random() * this.cities.length);
+        if (indexA>indexB) {
+            var tmp = indexB;
+            indexB=indexA;
+            indexA=tmp;
+        }
+        var dif = Math.floor(Math.abs(indexA-indexB)/2)
+        while (dif>0) {
+            const temp = this.cities[indexA+dif];
+            this.cities[indexA+dif] = this.cities[indexB-dif];
+            this.cities[indexB-dif] = temp;
+            dif=dif-1;
+        }
         this.distance = this.calculateTotalDistance();
+        if (Math.random()<0.2) {
+            this.mutate();
+        }
     }
 
     draw() {
@@ -88,19 +100,25 @@ function selectParents(population) {
     return parentA.distance < parentB.distance ? parentA : parentB;
 }
 
-function crossover(parentA, parentB) {
+function orderCrossover(parentA, parentB) {
     const start = Math.floor(Math.random() * parentA.cities.length);
     const end = Math.floor(Math.random() * (parentA.cities.length - start)) + start;
     const offspringCities = parentA.cities.slice(start, end);
 
-    parentB.cities.forEach(city => {
-        if (!offspringCities.includes(city)) {
-            offspringCities.push(city);
+    let index = 0;
+    for (let i = 0; i < parentB.cities.length; i++) {
+        if (!offspringCities.includes(parentB.cities[i])) {
+            if (index === start) {
+                index = end;
+            }
+            offspringCities.splice(index, 0, parentB.cities[i]);
+            index++;
         }
-    });
+    }
 
     return new Route(offspringCities);
 }
+
 
 function runGeneticAlgorithm(cities, populationSize, generations, mutationRate) {
     let population = createInitialPopulation(cities, populationSize);
@@ -111,7 +129,7 @@ function runGeneticAlgorithm(cities, populationSize, generations, mutationRate) 
         for (let i = 0; i < populationSize; i++) {
             const parentA = selectParents(population);
             const parentB = selectParents(population);
-            let offspring = crossover(parentA, parentB);
+            let offspring = orderCrossover(parentA, parentB);
 
             if (Math.random() < mutationRate) {
                 offspring.mutate();
@@ -129,8 +147,28 @@ function runGeneticAlgorithm(cities, populationSize, generations, mutationRate) 
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         cities.forEach(city => city.draw());
         bestRoute.draw();
+        //to show the path cost
+        displayPathCost(bestRoute);
     }
 }
+//function to show total path cost
+function displayPathCost(bestRoute) {
+    const pathCostElement = document.getElementById('path-cost');
+    pathCostElement.textContent = `Total path cost: ${bestRoute.distance.toFixed(2)}`;
+}
+
+canvas.addEventListener('click', () => {
+    const numCitiesInput = document.getElementById('num-cities');
+    const numCities = parseInt(numCitiesInput.value);
+
+    const populationSize = 100;
+    const generations = 1000;
+    const mutationRate = 0.1;
+    const cities = createRandomCities(numCities);
+
+    runGeneticAlgorithm(cities, populationSize, generations, mutationRate);
+});
+
 
 startButton.addEventListener('click', () => {
     //taking city input from user in web interface
@@ -143,5 +181,7 @@ startButton.addEventListener('click', () => {
     const cities = createRandomCities(numCities);
 
     runGeneticAlgorithm(cities, populationSize, generations, mutationRate);
+
+    
 });
 

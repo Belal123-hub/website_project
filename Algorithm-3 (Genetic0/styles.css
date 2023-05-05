@@ -23,8 +23,16 @@ body {
     margin: 0 auto;
 }
 
+#path-cost {
+    color: white;
+    font-size: 24px;
+
+}
+
 button {
     font-size: 1.2rem;
     padding: 10px 20px;
     cursor: pointer;
 }
+
+
