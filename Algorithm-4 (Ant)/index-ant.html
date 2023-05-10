@@ -2,11 +2,25 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <link rel="stylesheet" href="styles-ant.css">
+    <title>TSP Ant Algorithm</title>
 </head>
 <body>
+    <h1 id="title">Traveling Salesman Problem - Ant Algorithm</h1>
+
+    <div id="inputContainer">
+        <label for="cities">Enter city coordinates (x,y) separated by semicolons:</label><br>
+        <textarea id="cities" rows="4" cols="50">0,0;1,1;2,2;3,3;4,4</textarea><br>
+        <button id="start">Start</button>
+    </div>
+
+    <div id="outputContainer">
+        <h2>Results:</h2>
+        <p id="results"></p>
+    </div>
+
     
+    <script src="ant.js"></script>
 </body>
 </html>
