@@ -34,5 +34,15 @@ button {
     padding: 5px 10px;
     cursor: pointer;
 }
+/* for Advance version */
+.button {
+    display: inline-block;
+    padding: 10px 10px;
+    color: white;
+    background-color:maroon;
+    text-decoration: none;
+    text-align: center;
+  }
+  
 
 
