@@ -190,4 +190,19 @@ document.getElementById('aco-start-button').addEventListener('click', () => {
     const pathCostElement = document.getElementById('path-cost');
     pathCostElement.textContent = `Total Distance: ${bestAnt.distance.toFixed(2)}`;
   });
+
+  //making canvas body clickable to show next route.
+  canvas.addEventListener('click', () => {
+    const bestAnt = run();
+  
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    
+    for (const city of bestAnt.cities) {
+      city.draw();
+    }
+  
+    bestAnt.draw();
+    document.getElementById('path-cost').innerHTML = `Total Distance: ${bestAnt.distance.toFixed(2)}`;
+});
+
   
