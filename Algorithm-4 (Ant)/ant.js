@@ -58,7 +58,8 @@ class Ant {
     const r = Math.random();
     let s = 0;
 
-    for (let i = 0; i < probabilities.length; i++) {
+    for (let i = 0; i < probabilities.length; i++)
+     {
       s += probabilities[i] / sum;
       if (s >= r) {
         return i;
