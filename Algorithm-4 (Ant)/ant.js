@@ -146,7 +146,10 @@ function createAnts(numAnts, cities, pheromones) {
   }
   
   function run() {
-    const numCities = 20;
+    const numCitiesInput = document.getElementById('numCities');
+    let numCities = parseInt(numCitiesInput.value);
+
+
     const numAnts = 50;
     const numIterations = 100;
     const rho = 0.1;  //evaporation rate
