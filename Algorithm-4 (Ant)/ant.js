@@ -13,10 +13,11 @@ class City {
     return Math.sqrt(dx * dx + dy * dy);
   }
 
+//to draw the cities/node
   draw() {
     ctx.beginPath();
-    ctx.arc(this.x, this.y, 5, 0, 2 * Math.PI);
-    ctx.fillStyle = 'red';
+    ctx.arc(this.x, this.y, 6, 0, 2 * Math.PI);
+    ctx.fillStyle = 'blue';
     ctx.fill();
     ctx.stroke();
   }
@@ -76,7 +77,7 @@ class Ant {
 
     return distance;
   }
-
+//to draw the path/route
   draw() {
     ctx.beginPath();
     ctx.moveTo(this.cities[this.tour[0]].x, this.cities[this.tour[0]].y);
@@ -86,7 +87,7 @@ class Ant {
     }
 
     ctx.strokeStyle = 'blue';
-    ctx.lineWidth = 2;
+    ctx.lineWidth = 3;  //route-width
     ctx.stroke();
   }
 }
@@ -185,5 +186,8 @@ document.getElementById('aco-start-button').addEventListener('click', () => {
     }
   
     bestAnt.draw();
+   //to show path-cost
+    const pathCostElement = document.getElementById('path-cost');
+    pathCostElement.textContent = `Total Distance: ${bestAnt.distance.toFixed(2)}`;
   });
   

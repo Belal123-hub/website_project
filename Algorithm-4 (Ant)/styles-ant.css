@@ -15,7 +15,7 @@ body {
 }
 
 #canvas-container {
-    border: 4px solid white;
+    border: 7px solid white;
 }
 
 #aco-canvas {
@@ -23,6 +23,11 @@ body {
     margin: 0 auto;
 }
 
+#path-cost {
+    color: white;
+    font-size: 24px;
+
+}
 
 button {
     font-size: 1.5rem;
