@@ -1,13 +1,38 @@
 body {
 
+    background-image: url(ashraf2.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+
     font-family: Arial, sans-serif;
     display: flex;
+    justify-content: center;
     align-items: center;
     flex-direction: column;
     height: 100vh;
     margin: 0;
 }
 
-#title {
-    color: green;
+#canvas-container {
+    border: 4px solid white;
 }
+
+#aco-canvas {
+    display: block;
+    margin: 0 auto;
+}
+
+#path-cost {
+    color: white;
+    font-size: 24px;
+
+}
+
+button {
+    font-size: 1.5rem;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+
