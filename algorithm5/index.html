@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./style.css">
+    <title>Дерево решений</title>
+    
+</head>
+
+<body>
+    <header>
+        <div class="flex-wrapper">
+            <div id="left_logo"> <img class="logo" src="../main/images/logo_tsu.png"></div>
+            <div class="reference"><p><a href="../a_star/a_star.html">A-звездочка</a></p></div>
+            <div class="reference"><p><a href="../clustering/main.html">Кластеризация</a></p></div>
+            <div class="reference"><p><a href="../genetic/main.html">Генетический<br>алгоритм</a></p></div>
+            <div class="reference"><p><a href="../index.html">Домой</a></p></div>
+            <div class="reference"><p><a href="../ant_algorithm/ant_algorithm.html">Муравьиный<br>алгоритм</a></p></div>
+            <div class="reference"><p class="active"><a href="./index.html">Дерево<br>решений</a></p></div>
+            <div class="reference"><p><a href="../neural_network/index.html">Нейронная<br>сеть</a></p></div>
+            <div id="right_logo"> <img class="logo" src="../main/images/logo_hits.png"></div>
+        </div>
+    </header>
+
+    <div class="wrapper" id="wrapper">
+        <div class="toolbar">
+            <input class ="button" type="button" id="getFile_button" value="Построить дерево">
+            <input class ="button" type="button" id="start_button" value="Запустить обход">
+            <input class ="button" type="button" id="reset_button" value="Очистить все">
+            <input id="file_input" type="file">
+            <label class="label" for='file_input'>Загрузить файл с обучающей выборкой</label>
+            
+            
+            
+            <textarea id="input_data" name="input_data" cols="40" rows="18"></textarea></p>
+
+        </div>
+        <div class="canvas">
+            <div class="tree" id="tree">
+                <ul id="root">
+                    
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+    <script src="./ParserCSV.js"></script>
+    <script src="./DesicionTree.js"></script>
+    <script src="./data_tree.js"></script>
+    <script src="./interface.js"></script>
+    
+    <p></p>
+</body>
+</html>
