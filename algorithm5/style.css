@@ -8,21 +8,33 @@
     outline:none;
 }
 
-header {
-    height: 100px;
-    background-color: #247ABF;
-}
+
 
 body {
-    background-image: url(../main/images/background_tree.jpg);
+    margin: 0;
+    padding: 0;
+
+    background-image: url('decission.jpg');
     background-repeat: no-repeat;
-    background-size: cover;
+    background-attachment: fixed;
+    background-size:cover;
 }
 
 .flex-wrapper {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    
+    
+}
+.flex-wrapper  button{
+    border: 2px solid white;
+    border-radius: 5px;
+    padding: 17px 20px;
+    font-size: 19px;
+    cursor:pointer;
+    border-radius: 25px;
+    
 }
 
 header > div p {
@@ -31,27 +43,15 @@ header > div p {
     margin-right: auto;
     width: max-content;
 }
-
-header > .flex-wrapper > .reference > .active > a {
-    color: black;
-}
-
 .logo {
     width: 78px;
     margin-top: 4px;
 }
-
 #left_logo {
     margin-left: 28px;
 }
-
 #right_logo {
     margin-right: 28px;
-}
-
-a, a:visited, a:hover {
-    text-decoration: none;
-    color: #fff;
 }
 
 .wrapper {
@@ -69,9 +69,9 @@ a, a:visited, a:hover {
 input{
     appearance: none;
     border: 0;
-    border-radius: 10px;
-    background: #247ABF;
-    color: #fff;
+    border-radius: 25px;
+    background:rgb(192, 56, 104);
+    color:white;
     font-size: 16px;
     margin: 20px auto 20px auto;
     
@@ -86,41 +86,21 @@ input{
     overflow: scroll;
     width: 1000px;
     height: 600px;
-    background-color: rgb(255, 255, 255);
+    
     display: block;
     margin-left: auto;
     margin-right: auto;
 }
 
-#answer:focus, #answer:hover{
-    outline: none;
-    background-color: #247ABF;
-}
-
 .canvas {
     display: block;
-    width: 1000px;
-    height: 600px;
-
-    border: 5px solid black;
-    margin: 0 auto 0 auto;
-}
-
-.button-wrapper{
-    margin-top: 180px;
-}
-.input_test {
-    
-    display: block;
-    width: 300px;
-    height: 50px;
 }
 
 .button {
     appearance: none;
     border: 0;
-    border-radius: 10px;
-    background: #247ABF;
+    border-radius: 25px;
+    background: #700725;
     color: #fff;
     font-size: 16px;
     margin: 20px auto 20px auto;
@@ -131,15 +111,15 @@ input{
     height: 50px;
 }
 .button:hover {
-    background: #7AB0DC;
+    background: #475b94;
 }
 
 
 .label {
     appearance: none;
     border: 0;
-    border-radius: 10px;
-    background: #247ABF;
+    border-radius: 25px;
+    background: #700725;
     color: #fff;
     font-size: 16px;
     padding: 7px 0 23px 0;
@@ -148,10 +128,6 @@ input{
     display: block;
     width: 300px;
     height: 20px;
-}
-
-.label:hover {
-    background: #7AB0DC;
 }
 .tree ul {
     display: flex;
@@ -172,7 +148,7 @@ input{
 	content: '';
 	position: absolute; 
     top: 0; right: 50%;
-	border-top: 1px solid #ccc;
+	border-top: 1px solid #831818;
 	width: 50%; 
     height: 20px;
 }
@@ -194,7 +170,7 @@ input{
 }
 
 .tree li:last-child::before{
-	border-right: 1px solid #ccc;
+	border-right: 1px solid #cc1111;
 	border-radius: 0 5px 0 0;
 }
 
@@ -213,7 +189,7 @@ input{
 
 .tree li a{
     background: #f5f5f5;
-	border: 1px solid #ccc;
+	border: 1px solid #140101;
     min-width: 200px;
     max-width: min-content;
     padding-top: 15px;
@@ -221,8 +197,8 @@ input{
 	text-decoration: none;
 	color: #000;
 	font-family: arial, verdana, tahoma;
-	font-size: 14px;
+	font-size: 13px;
 	display: inline-block;
-	border-radius: 5px;
+	border-radius: 25px;
     
 }

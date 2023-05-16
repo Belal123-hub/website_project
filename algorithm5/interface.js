@@ -4,13 +4,13 @@ getFile_button.addEventListener('click', createTree);
 const FILE = document.getElementById('file_input');
 let flag = true;
 document.getElementById('input_data').value = "TANG,ON DINH,CAO,TB"
-buildTree(getData(3));
+buildTree(getData(0));
 let treeRoot = document.getElementById("root");
 
 function createTree() {
     treeRoot = removeTree();
     if(FILE.value === '') {
-        buildTree(getData(3));
+        buildTree(getData(0));
         drawTree(root, treeRoot);
     }
     else {
@@ -34,7 +34,6 @@ function start() {
 }
 function reset() {
     treeRoot = removeTree(treeRoot);
-    //drawTree(root, treeRoot);
 }
 
 

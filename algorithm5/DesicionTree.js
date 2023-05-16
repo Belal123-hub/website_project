@@ -49,7 +49,7 @@ async function bypassTree() {
         }
         counter--;
         if(counter<0) {
-            alert("Я не могу распознать ваш тест.")
+            alert("No result !")
             break;
         }
     }

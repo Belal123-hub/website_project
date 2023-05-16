@@ -6,12 +6,12 @@ body {
     margin: 0;
     padding: 0;
     
-   /* background-image: url('images/star_cluster.jpg');
+    background-image: url('images/star_cluster.jpg');
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-size:cover;
 }
-  */
+  
   
   /* Style for the button container */
   .button-container {

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./style.css">
+    <title>Desicion Tree</title>
+    
+</head>
+
+<body>
+    <header>
+        <div class="flex-wrapper">
+            <div id="left_logo"> <img class="logo" src="images.jpeg"></div>
+            <button onclick="redirectTo('page1.html')">A*</button>
+            <button onclick="redirectTo('/algorithm2-1/index.html')">clustrization</button>
+            <button onclick="redirectTo('/algorithm3/genetic.html')">Genetic algorithm</button>
+            <button onclick="redirectTo('page4.html')">Ant algorithm</button>
+            <button onclick="redirectTo('Decision.html')">Decision Tree</button>
+            <button onclick="redirectTo('page6.html')">Neural network</button>
+        </div>
+    </header>
+
+    <div class="wrapper" id="wrapper">
+        <div class="toolbar">
+            <input class ="button" type="button" id="getFile_button" value="build tree">
+            <input class ="button" type="button" id="start_button" value="start">
+            <input class ="button" type="button" id="reset_button" value="clear">
+            <input id="file_input" type="file">
+            <label class="label" for='file_input'>upload file</label>
+            
+            <textarea id="input_data" name="input_data" cols="40" rows="18"></textarea></p>
+
+        </div>
+        <div class="canvas">
+            <div class="tree" id="tree">
+                <ul id="root">
+                    
+                </ul>
+            </div>
+        </div>
+    </div>
+    <script>
+        function redirectTo(url) {
+            window.location.href = url;
+        }
+    </script>
+    
+    <script src="./ParserCSV.js"></script>
+    <script src="./DesicionTree.js"></script>
+    <script src="./data_tree.js"></script>
+    <script src="./interface.js"></script>
+    
+    <p></p>
+</body>
+</html>
