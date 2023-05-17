@@ -195,80 +195,86 @@ function updatePheromones(pheromones, ants, rho, Q) {
   }
 
   for (let i = 0; i < pheromones.length; i++) {
-    for (let j = 0; j < pheromones.length; j++) {
-      pheromones[i][j] = pheromones[i][j] * (1 - rho) + pheromonesUpdate[i][j];
+    for (let j = 0; j < pheromones[i].length; j++) {
+      pheromones[i][j] = (1 - rho) * pheromones[i][j] + pheromonesUpdate[i][j];
     }
   }
 }
 
-let foods = createRandomFoods(numFoods);
-
-canvas.addEventListener('click', (event) => {
-  const rect = canvas.getBoundingClientRect();
-  const x = event.clientX - rect.left;
-  const y = event.clientY - rect.top;
-  foods.push(new Food(x, y));
-});
-
-function run() {
-  const numCitiesInput = document.getElementById('numCities');
-  let numCities = parseInt(numCitiesInput.value);
-
-  const numFoods = 20;
-  const numAnts = 50;
-  const numIterations = 100;
-  const rho = 0.1; // evaporation rate
-const Q = 1; // pheromone left on trail by each Ant
-const initialValue = 1; // initial pheromone value
-
-const cities = createRandomCities(numCities);
-const foods = [];
-
-let pheromones = createPheromones(numCities, initialValue);
-let bestAnt = null;
-let ants; // declare it here
-
-// Add event listener to place food locations
-canvas.addEventListener('click', (event) => {
-  const rect = canvas.getBoundingClientRect();
-  const x = event.clientX - rect.left;
-  const y = event.clientY - rect.top;
-  foods.push(new Food(x, y));
-});
-
-for (let iteration = 0; iteration < numIterations; iteration++) {
-  ants = createAnts(numAnts, cities, pheromones, foods);
+function updateBestTour(bestTour, ants) {
+  let bestDistance = Number.MAX_VALUE;
 
   for (const ant of ants) {
-    if (!bestAnt || ant.distance < bestAnt.distance) {
-      bestAnt = ant;
+    if (ant.distance < bestDistance) {
+      bestDistance = ant.distance;
+      bestTour.length = 0;
+      for (const city of ant.tour) {
+        bestTour.push(city);
+      }
     }
   }
-
-  updatePheromones(pheromones, ants, rho, Q);
 }
 
-return { bestAnt, foods, ants }; // return them all as an object
-}
-
-document.getElementById('aco-start-button').addEventListener('click', () => {
-  const { bestAnt, foods, ants } = run(); // get them from the returned object
-
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-  for (const city of bestAnt.cities) {
+function drawCities(cities) {
+  for (const city of cities) {
     city.draw();
   }
+}
 
+function drawFoods(foods) {
   for (const food of foods) {
     food.draw();
   }
+}
 
+function drawAnts(ants) {
   for (const ant of ants) {
     ant.draw();
+    ant.drawPath();
   }
+}
 
-  bestAnt.draw();
+function clearCanvas() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+}
+
+function updateCanvas(cities, foods, ants) {
+  clearCanvas();
+  drawCities(cities);
+  drawFoods(foods);
+  drawAnts(ants);
+}
+
+function aco(numCities, numAnts, numFoods, rho, Q, numIterations) {
+  const cities = createRandomCities(numCities);
+  const foods = createRandomFoods(numFoods);
+  const pheromones = createPheromones(numCities, 1 / numCities);
+  const ants = createAnts(numAnts, cities, pheromones, foods);
+  const bestTour = [];
+  let iteration = 0;
+
+  updateCanvas(cities, foods, ants);
+
+  const intervalId = setInterval(() => {
+    updatePheromones(pheromones, ants, rho, Q);
+    updateBestTour(bestTour, ants);
+    iteration++;
+
+    if (iteration >= numIterations) {
+      clearInterval(intervalId);
+    }
+  }, 100);
+
+  return bestTour;
+}
+
+document.getElementById('aco-start-button').addEventListener('click', () => {
+  const numCities = parseInt(document.getElementById('numCities').value);
+  const numAnts = 10;
+  const numFoods = 5;
+  const rho = 0.1;
+  const Q = 1;
+  const numIterations = 100;
+
+  aco(numCities, numAnts, numFoods, rho, Q, numIterations);
 });
-
-
