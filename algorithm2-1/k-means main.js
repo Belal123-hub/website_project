@@ -3,8 +3,6 @@ var ctx = canvas.getContext('2d');
 var context = canvas.getContext('2d');
 canvas.addEventListener('mousedown', handleMouseDown);
 
-
-// drawing the point or the circle on the place of clicking part
 var points = [];
 function handleMouseDown(event) {
     var x = event.clientX - canvas.offsetLeft;
