@@ -1,27 +1,33 @@
 // Canvas setup
 const canvas = document.getElementById("myCanvas");
-const ctx = canvas.getContext("2d");
-const width = canvas.width;
-const height = canvas.height;
-canvas.addEventListener('mousedown', handleMouseDown);
+const context = canvas.getContext("2d");
+const width = canvas.width;   // null 
+const height = canvas.height;  // null
+canvas.addEventListener('mousedown', handleMouseDown);  // to handle the data on convas according to mouse coordinates
 
-var points = [];
+var points = [];        // initial value for an array
 function handleMouseDown(event) {
-    var x = event.clientX - canvas.offsetLeft;
-    var y = event.clientY - canvas.offsetTop;
-    ctx.fillStyle = 'black';
-    ctx.beginPath();
-    ctx.arc(x - 8, y - 8, 5, 0, Math.PI * 2);
-    ctx.fill();
-    points.push({ x, y });
-    console.log(points);
+  // Calculate the mouse coordinates relative to the canvas
+  var coordin1 = event.clientX - canvas.offsetLeft;
+  var coordin2 = event.clientY - canvas.offsetTop;
+  // Set the fill style to black
+  context.fillStyle = 'black';  // lets consider black 
+  // Start a new path
+  context.beginPath();
+  // Draw a filled circle (point) on the canvas
+  context.arc(coordin1 - 8, coordin2 - 8, 5, 0, Math.PI * 2);
+  // Fill the circle with the defined fill style
+  context.fill();
+  // Store the coordinates of the point in the points array
+  points.push({ x: coordin1, y: coordin2 });
+  console.log(points);
 }
 
 // DBSCAN algorithm
-function dbscan(data, epsilon, minPoints) {
+function dbscan(data, epsilon, minPoints) 
+{
   const clusters = [];
-  const visited = new Set();
-
+  const visited = new Set();   // to keep track of points that have been visited 
   // Helper function to calculate distance between two points
   function distance(pointA, pointB) {
     const dx = pointA.x - pointB.x;
@@ -29,7 +35,7 @@ function dbscan(data, epsilon, minPoints) {
     return Math.sqrt(dx * dx + dy * dy);
   }
 
-  // Helper function to get neighbors of a point
+  // Helper function to get neighbors of a point // find neighbours
   function getNeighbors(point) {
     const neighbors = [];
     for (const other of data) {
@@ -41,7 +47,8 @@ function dbscan(data, epsilon, minPoints) {
   }
 
   // Helper function to expand a cluster
-  function expandCluster(point, neighbors, clusterId) {
+  function expandCluster(point, neighbors, clusterId) 
+  {
     clusters[clusterId].push(point);
     visited.add(point);
 
@@ -85,7 +92,6 @@ function dbscan(data, epsilon, minPoints) {
       clusterId++;
     }
   }
-
   return clusters;
 }
 
@@ -102,7 +108,6 @@ const epsilon = 10;
 const minPoints = 2;
 
 // Perform DBSCAN clustering
-// Perform DBSCAN clustering
 function startButton() {
     const data = [];
     for (let i = 0; i < 200; i++) {
@@ -117,12 +122,12 @@ function startButton() {
     for (let i = 0; i < clusters.length; i++) {
       const cluster = clusters[i];
       const color = colors[i];
-      ctx.fillStyle = color;
+      context.fillStyle = color;
   
       for (const point of cluster) {
-        ctx.beginPath();
-        ctx.arc(point.x - 8, point.y - 8, 5, 0, Math.PI * 2);
-        ctx.fill();
+        context.beginPath();
+        context.arc(point.x - 8, point.y - 8, 5, 0, Math.PI * 2);
+        context.fill();
       }
     }
   }
@@ -140,7 +145,7 @@ function startButton() {
   }
   
 function clearButton() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    context.clearRect(0, 0, canvas.width, canvas.height);
     points = [];
 }
     

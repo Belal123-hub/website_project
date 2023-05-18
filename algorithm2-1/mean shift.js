@@ -1,99 +1,102 @@
-function meanShift(points, radius) {
-    // Initialize the cluster centers to be the same as the input points
-    let centers = points.slice();
-  
-    // Define a kernel function that determines the weight of nearby points
-    function kernel(distance) {
-      return Math.max(0, 1 - distance / radius);
-    }
-  
-    // Define a distance function that calculates the Euclidean distance between two points
-    function distance(a, b) {
-      const dx = a.x - b.x;
-      const dy = a.y - b.y;
-      return Math.sqrt(dx*dx + dy*dy);
-    }
-  
-    // Define a function that finds the new center for a single point
-    function findCenter(point) {
-      let sumX = 0;
-      let sumY = 0;
-      let sumWeight = 0;
-  
-      // Loop over all points and calculate their weight and contribution to the new center
-      for (let i = 0; i < points.length; i++) {
-        const d = distance(point, points[i]);
-        const w = kernel(d);
-        sumX += points[i].x * w;
-        sumY += points[i].y * w;
-        sumWeight += w;
-      }
-  
-      // Calculate the new center based on the weighted contributions of nearby points
-      return { x: sumX / sumWeight, y: sumY / sumWeight };
-    }
-  
-    // Loop over all centers and find their new locations
-    for (let i = 0; i < centers.length; i++) {
-      centers[i] = findCenter(centers[i]);
-    }
-  
-    return centers;
+var canvas = document.getElementById('myCanvas');
+var context = canvas.getContext('2d');
+
+canvas.addEventListener('mousedown', handleMouseDown);
+
+var points = [];
+
+function handleMouseDown(event) {
+  var coordin1 = event.clientX - canvas.offsetLeft;
+  var coordin2 = event.clientY - canvas.offsetTop;
+  context.fillStyle = 'black';
+  context.beginPath();
+  context.arc(coordin1 - 8, coordin2 - 8, 5, 0, Math.PI * 2);
+  context.fill();
+  points.push({ x: coordin1, y: coordin2 });
+}
+
+function meanShiftClustering(data, bandwidth) {
+  var shiftedPoints = data.slice();
+  var convergenceThreshold = 0.0001;
+
+  function gaussianKernel(distance, bandwidth) {
+    var radius = distance / bandwidth;
+    var coefficient = 1 / (bandwidth * Math.sqrt(2 * Math.PI));
+    return coefficient * Math.exp(-0.5 * radius * radius);
   }
-  
-  function drawPoints(points) {
-    const ctx = canvas.getContext('2d');
-  
-    // Draw each point as a small circle
-    for (let i = 0; i < points.length; i++) {
-      const { x, y } = points[i];
-      ctx.fillStyle = '#000';
-      ctx.beginPath();
-      ctx.arc(x, y, 3, 0, Math.PI * 2);
-      ctx.fill();
-    }
+
+  function euclideanDistance(point1, point2) {
+    return Math.sqrt(
+      Math.pow(point1.x - point2.x, 2) + Math.pow(point1.y - point2.y, 2)
+    );
   }
-  
-  function drawClusters(clusters) {
-    const colors = ['#f00', '#0f0', '#00f', '#ff0', '#f0f', '#0ff'];
-    const ctx = canvas.getContext('2d');
-  
-    // Clear the canvas
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-  
-    // Draw each cluster using a different color
-    for (let i = 0; i < clusters.length; i++) {
-      const color = colors[i % colors.length];
-      const cluster = clusters[i];
-  
-      for (let j = 0; j < cluster.length; j++) {
-        const { x, y } = cluster[j];
-        ctx.fillStyle = color;
-        ctx.beginPath();
-        ctx.arc(x, y, 5, 0, Math.PI * 2);
-        ctx.fill();
+
+  function shiftPoint(point) {
+    var shift = { x: 0, y: 0 };
+    var shiftTotal = 0;
+
+    for (var i = 0; i < data.length; i++) {
+      var distance = euclideanDistance(point, data[i]);
+      var weight = gaussianKernel(distance, bandwidth);
+      shift.x += weight * data[i].x;
+      shift.y += weight * data[i].y;
+      shiftTotal += weight;
+    }
+
+    point.x = shift.x / shiftTotal;
+    point.y = shift.y / shiftTotal;
+  }
+
+  var converged = false;
+
+  while (!converged) {
+    converged = true;
+
+    for (var i = 0; i < shiftedPoints.length; i++) {
+      var oldPoint = Object.assign({}, shiftedPoints[i]);
+      shiftPoint(shiftedPoints[i]);
+      var distance = euclideanDistance(oldPoint, shiftedPoints[i]);
+
+      if (distance > convergenceThreshold) {
+        converged = false;
       }
     }
   }
-  
-  function clearButton() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    points = [];
+
+  return shiftedPoints;
+}
+function get_color_rondomly() {
+  // Generate a random RGB color string
+  const red = Math.floor(Math.random() * 256);    // give the number and multiply it by 256   and round it
+  const green = Math.floor(Math.random() * 256);   // give the number and multiply it by 256 and round it 
+  const blue = Math.floor(Math.random() * 256);   // give the number and multiply it by 256 and round it
+  return `rgb(${red}, ${green}, ${blue})`;
+}
+
+function renderPoints(points, color) {
+  context.fillStyle = color;
+
+  for (var i = 0; i < points.length; i++) {
+    context.beginPath();
+    context.arc(points[i].x - 8, points[i].y - 8, 5, 0, Math.PI * 2);
+    context.fill();
   }
-  
-  // Example usage:
-  let points = [];
-  
-  canvas.addEventListener('click', event => {
-    const rect = canvas.getBoundingClientRect();
-    const x = event.clientX - rect.left;
-    const y = event.clientY - rect.top;
-    points.push({ x, y });
-  
-    // Draw the points on the canvas
-    drawPoints(points);
-  
-    // Run Mean Shift clustering on the points
-    const clusters = meanShift(points, 50);
-  
-    // Draw
+}
+
+function startButton() {
+  var number_of_clusters = document.getElementById('clusterNum').value;
+  var bandwidth = parseFloat(document.getElementById('bandwidth')).value;
+  var shiftedPoints = meanShiftClustering(points, bandwidth);
+  var clusters = meanShiftClustering(shiftedPoints, bandwidth);
+
+  for (var i = 0; i < clusters.length; i++) {
+    var color = get_color_rondomly();
+    console.log(color);
+    renderPoints(clusters[i], color);
+  }
+}
+
+function clearButton() {
+  context.clearRect(0, 0, canvas.width, canvas.height);
+  points = [];
+}
