@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Bootstrap Example</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <style>
+    /* Set height of the grid so .sidenav can be 100% (adjust if needed) */
+    .row.content {height: 1500px}
+    
+    /* Set gray background color and 100% height */
+    .sidenav {
+      background-color: #f1f1f1;
+      height: 100%;
+      width: 220px; /* Adjust the width as needed */
+    }
+    
+    /* Set black background color, white text and some padding */
+    footer {
+      background-color: #555;
+      color: white;
+      padding: 15px;
+    }
+    
+    /* On small screens, set height to 'auto' for sidenav and grid */
+    @media screen and (max-width: 767px) {
+      .sidenav {
+        height: auto;
+        padding: 15px;
+      }
+      .row.content {height: auto;} 
+    }
+
+    /* Style for the iframe container */
+    .algorithm-iframe-container {
+      height: calc(100vh - 56px); /* Adjust the height as needed */
+      width: 120%;
+      border: none;
+    }
+  </style>
+  <script>
+    $(document).ready(function() {
+      // Event handler for algorithm button clicks
+      $('.algorithm-link').click(function(e) {
+        e.preventDefault();
+        var url = $(this).attr('href');
+        $('#algorithm-iframe').attr('src', url);
+      });
+    });
+  </script>
+</head>
+<body>
+
+<div class="container-fluid">
+  <div class="row content">
+    <div class="col-sm-3 sidenav">
+      <h4>Website Project</h4>
+      <ul class="nav nav-pills nav-stacked">
+        <li class="active"><a href="#section1">Home</a></li>
+        <li><a href="./algorithm1/algorithm1.html" class="algorithm-link">Algorithm 1</a></li>
+        <li><a href="./algorithm2/algorithm2.html" class="algorithm-link">Algorithm 2</a></li>
+        <li><a href="./Algorithm-3 (Genetic)/index.html" class="algorithm-link">Genetic-TSP</a></li>
+        <li><a href="./Algorithm-4 (Ant)/index-ant.html" class="algorithm-link">Ant-TSP</a></li>
+        <li><a href="./algorithm5/algorithm5.html" class="algorithm-link">Algorithm 5</a></li>
+        <li><a href="./algorithm6/algorithm6.html" class="algorithm-link">Algorithm 6</a></li>
+      </ul>
+    </div>
+    <div class="col-sm-9">
+      <iframe id="algorithm-iframe" class="algorithm-iframe-container" src="about:blank"></iframe>
+    </div>
+  </div>
+</div>
+
+<footer class="container-fluid">
+  <p>Created by Belal, Ous, and Ashraf</p>
+</footer>
+
+</body>
+</html>
