@@ -1,9 +1,4 @@
 
-var canvas = document.getElementById('myCanvas');     // Get the canvas element and its 2D rendering context
-var context = canvas.getContext('2d');                   // variable to perform various drawing operations on the canvas
-
-var context = canvas.getContext('2d');         // Get another 2D rendering context (unnecessary duplication)
-
 canvas.addEventListener('mousedown', handleMouseDown);   // Add a mousedown event listener to the canvas and call  handleMouseDown function
 
 var points = [];   // Array to store the points

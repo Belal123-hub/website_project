@@ -1,7 +1,7 @@
 
 
 /* Set background color for the whole page */
-body {
+/* body {
     background-color: #f2f2f2;
     margin: 0;
     padding: 0;
@@ -11,8 +11,10 @@ body {
     background-attachment: fixed;
     background-size:cover;
 }
-  
-  
+   */
+   canvas {
+    border: 5px solid red;
+}
   /* Style for the button container */
   .button-container {
     top: 0;

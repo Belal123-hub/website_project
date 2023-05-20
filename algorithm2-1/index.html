@@ -3,9 +3,9 @@
 <head>
     <title>clustrization</title>
     <link rel="stylesheet" type="text/css" href="index.css">
+    <script src="index.js"></script>
 </head>
 <body>
-    <p style="background-image: url('/images/star_cluster.jpg');"></p>
     <div class="button-container">
         <h1>clustrization</h1>
         <button onclick="redirectTo('page1.html')">A*</button>
@@ -15,17 +15,24 @@
         <button onclick="redirectTo('/algorithm5/Decision.html')">Decision Tree</button>
         <button onclick="redirectTo('page6.html')">Neural network</button>
     </div>
-    <div class="button-container2">
-        <button onclick="redirectTo('k-means index.html')">k-means</button>
-        <button onclick="redirectTo('DBSCAN.html')">DBSCAN</button>
-        <button onclick="redirectTo('mean shift.html')">mean-shift</button>
+    <div class="div1">
+        <label for="clusterNum">Number of clusters</label>
+        <input type="number" id="clusterNum" value="2">
+        <button onclick="startButton()">Start</button>
+        <button onclick="clearButton()">Clear</button>
     </div>
-    
     <script>
         function redirectTo(url) {
             window.location.href = url;
         }
     </script>
-    
+     <canvas id="myCanvas" width="400" height="400"></canvas>
+
+     <select id="algorithmSelector" onchange="loadAlgorithm()">
+        
+       <option value="k-means-main.js">k-means main</option>
+       <option value="DBSCAN.js">DBSCAN</option>
+       <option value="mean-shift.js">mean shift</option>
+    </select>
 </body>
 </html>

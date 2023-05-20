@@ -1,8 +1,4 @@
-// Canvas setup
-const canvas = document.getElementById("myCanvas");
-const context = canvas.getContext("2d");
-const width = canvas.width;   // null 
-const height = canvas.height;  // null
+
 canvas.addEventListener('mousedown', handleMouseDown);  // to handle the data on convas according to mouse coordinates
 
 var points = [];        // initial value for an array
