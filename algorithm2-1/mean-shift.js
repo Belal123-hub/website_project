@@ -1,3 +1,5 @@
+canvas = document.getElementById("myCanvas");
+context = canvas.getContext("2d");
 
 canvas.addEventListener('mousedown', handleMouseDown);
 
@@ -12,7 +14,6 @@ function handleMouseDown(event) {
   context.fill();
   points.push({ x: coordin1, y: coordin2 });
 }
-
 function meanShiftClustering(data, bandwidth) {
   var shiftedPoints = data.slice();
   var convergenceThreshold = 0.0001;
@@ -24,11 +25,11 @@ function meanShiftClustering(data, bandwidth) {
   }
 
   function euclideanDistance(point1, point2) {
-    return Math.sqrt(
-      Math.pow(point1.x - point2.x, 2) + Math.pow(point1.y - point2.y, 2)
-    );
+    var dx = point1.x - point2.x;
+    var dy = point1.y - point2.y;
+    return Math.sqrt(dx * dx + dy * dy);
   }
-
+  
   function shiftPoint(point) {
     var shift = { x: 0, y: 0 };
     var shiftTotal = 0;
@@ -61,36 +62,79 @@ function meanShiftClustering(data, bandwidth) {
     }
   }
 
+  // Assign cluster indices to points
+  var clusterIndex = 0;
+  for (var i = 0; i < shiftedPoints.length; i++) {
+    if (!shiftedPoints[i].clusterIndex) {
+      assignCluster(shiftedPoints[i], clusterIndex);
+      clusterIndex++;
+    }
+  }
+
+  function assignCluster(shiftedPoints, data, bandwidth) {
+    for (var i = 0; i < shiftedPoints.length; i++) {
+      var shift = { x: 0, y: 0 };
+      var shiftTotal = 0;
+  
+      for (var j = 0; j < data.length; j++) {
+        var distance = euclideanDistance(shiftedPoints[i], data[j]);
+        var weight = gaussianKernel(distance, bandwidth);
+        shift.x += weight * data[j].x;
+        shift.y += weight * data[j].y;
+        shiftTotal += weight;
+      }
+  
+      shiftedPoints[i].x = shift.x / shiftTotal;
+      shiftedPoints[i].y = shift.y / shiftTotal;
+    }
+  }
+  
+
   return shiftedPoints;
 }
-function get_color_rondomly() {
-  // Generate a random RGB color string
-  const red = Math.floor(Math.random() * 256);    // give the number and multiply it by 256   and round it
-  const green = Math.floor(Math.random() * 256);   // give the number and multiply it by 256 and round it 
-  const blue = Math.floor(Math.random() * 256);   // give the number and multiply it by 256 and round it
+
+
+function get_color_randomly() {
+  const red = Math.floor(Math.random() * 256);
+  const green = Math.floor(Math.random() * 256);
+  const blue = Math.floor(Math.random() * 256);
   return `rgb(${red}, ${green}, ${blue})`;
 }
 
 function renderPoints(points, color) {
-  context.fillStyle = color;
-
   for (var i = 0; i < points.length; i++) {
+    context.fillStyle = color;
     context.beginPath();
     context.arc(points[i].x - 8, points[i].y - 8, 5, 0, Math.PI * 2);
     context.fill();
   }
 }
+function testColorFunction() {
+  var color = get_color_randomly();
+  console.log(color);
+}
+
+// Call the test function to check the color output
+testColorFunction();
+testColorFunction();
 
 function startButton() {
   var number_of_clusters = document.getElementById('clusterNum').value;
-  var bandwidth = parseFloat(document.getElementById('bandwidth')).value;
-  var shiftedPoints = meanShiftClustering(points, bandwidth);
-  var clusters = meanShiftClustering(shiftedPoints, bandwidth);
+  var clusters = meanShiftClustering(points, number_of_clusters);
+
+  var clusteredPoints = [];
+  for (var i = 0; i < number_of_clusters; i++) {
+    clusteredPoints.push([i]);
+  }
 
   for (var i = 0; i < clusters.length; i++) {
-    var color = get_color_rondomly();
-    console.log(color);
-    renderPoints(clusters[i], color);
+    var clusterIndex = clusters[i].clusterIndex;
+    clusteredPoints[clusterIndex].push(clusters[i]);
+  }
+
+  for (var i = 0; i < clusteredPoints.length; i++) {
+    var color = get_color_randomly();
+    renderPoints(clusteredPoints[i], color);
   }
 }
 
@@ -98,3 +142,4 @@ function clearButton() {
   context.clearRect(0, 0, canvas.width, canvas.height);
   points = [];
 }
+

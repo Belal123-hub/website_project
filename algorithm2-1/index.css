@@ -1,37 +1,126 @@
 
 
-/* Set background color for the whole page */
-/* body {
-    background-color: #f2f2f2;
-    margin: 0;
-    padding: 0;
-    
-    background-image: url('images/star_cluster.jpg');
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    background-size:cover;
+body{
+  background-color: #1e1f29;
 }
-   */
+.dropdown {
+  position: relative;
+  display: inline-block;
+
+}
+.dropdown button{
+  background-color:purple ;
+  border-radius: 25px;
+}
+
+.dropdown-content {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  display: none;
+}
+.dropdown-content a:hover {
+  background-color: purple;
+  color: white;
+}
+
+.dropdown:hover .dropdown-content {
+  display: flex;
+  flex-direction: row;
+}
+
+.dropdown-content a {
+  display: block;
+  padding: 10px;
+  text-decoration: none;
+  color:antiquewhite;
+  margin-right: 30px;
+}
+
+.general-button{
+  color:antiquewhite;
+  font-weight: inherit;
+  font-size: inherit;
+  padding: 0.5em 1em;
+  background-color: transparent;
+  transition: background-color 0.3s linear, transform 0.15s ease-out;
+  margin-inline: 70px;
+}
+.general-button:hover{
+  cursor: pointer;
+}
+.general-button:active{
+  transform: scale(1.1);
+}
+.options-button:hover{
+  color: var(--path);
+}
+
    canvas {
-    border: 5px solid red;
+    border: 3px solid #A6819B;
+    width: 1000px;
+    height: 400px;
+    margin-top: 40px;
+    margin-left: 280px;
+    background-color:#252630;
 }
+
+.navbar{
+  width: 100%;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  align-items: stretch;
+  font-size: 16px;
+  font-weight: bold;
+  padding: 15px ;
+  margin-top: 50px;
+  
+}
+.navbar-item{
+  text-align: center;
+  display: flex;
+  align-items: center;
+  margin: 0 10px;
+}
+.navbar-item-caption{
+  text-align: center;
+  background-color: var(--closed-path);
+}
+    /* .div2 {
+    position: fixed;
+    top: 45%;
+    right: 13%;
+    color: antiquewhite;
+   }
+   .div1 {
+    position: fixed;
+    top: 30%;
+    right: 10%;
+    color: antiquewhite;
+   
+} */
+/* .div1 button {
+  display: block;
+  margin-top: 10px;
+} */
   /* Style for the button container */
-  .button-container {
-    top: 0;
+  /* .button-container {
+    top:0;
     left: 0;
     right: 0;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color:purple;
+    background-color:#1e1f29;
     color:white;
     padding: 20px;
     z-index: 1;
-    box-shadow: 0px 5px #520150;
-  }
+
+  } */
   
 /* Style for the buttons inside the div */
-.button-container button {
+/* .button-container button {
     background-color:#520150;
     color: white;
     border: 2px solid white;
@@ -41,11 +130,11 @@
     cursor:pointer;
     border-radius: 25px;
 
-  }
+  } */
   
   
   /* Style for the title */
-  .button-container h1 {
+  /* .button-container h1 {
     margin: 0;
     font-size: 30px;
     border-radius: 25px;
@@ -59,19 +148,5 @@
     justify-content: center;
     align-items: center;
     height: 100vh;
-  }
+  } */
   
-  .button-container2 button {
-    background-color:bisque;
-    margin: 10px;
-    padding: 20px;
-    flex-basis: calc(50% - 20px);
-    max-width: 300px;
-    border-radius: 25px;
-    font-size: 19px;
-  }
-
-  /*.button-container2 button:last-child {
-    flex-basis: 100%;
-  }
-  */
