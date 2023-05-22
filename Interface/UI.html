@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>Web Interface</title>
+    <!-- Favicon-->
+    <link rel="icon" type="image/x-icon" href="./logo.ico" />
+    <!-- Core theme CSS (includes Bootstrap)-->
+    <link href="./UI.css" rel="stylesheet" />
+    <style>
+        #sidebar-wrapper {
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            width: 10rem;
+            z-index: 1000;
+            overflow-y: auto;
+            transition: margin 0.25s ease-out;
+        }
+
+        #page-content-wrapper {
+            margin-left: 7.78rem;
+            padding: 1rem;
+            transition: margin 0.25s ease-out;
+        }
+
+        #content-frame {
+            width: 103%;
+            height: calc(110vh - 56px);
+            border: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="d-flex" id="wrapper">
+        <!-- Sidebar-->
+        <div class="border-end bg-white" id="sidebar-wrapper">
+            <div class="list-group list-group-flush">
+                <a class="list-group-item list-group-item-action list-group-item-light p-3" href="" target="content-frame" style="color: antiquewhite;">Home</a>
+                <a class="list-group-item list-group-item-action list-group-item-light p-3" href="/Algorithm-1 (A_Star)/index.html" target="content-frame" style="color: antiquewhite;">A-Star</a>
+                <a class="list-group-item list-group-item-action list-group-item-light p-3" href="/algorithm2-1/" target="content-frame" style="color: antiquewhite;">Clusterization</a>
+                <a class="list-group-item list-group-item-action list-group-item-light p-3" href="/Algorithm-3 (Genetic)/index.html" target="content-frame" style="color: antiquewhite;">Genetic-TSP</a>
+                <a class="list-group-item list-group-item-action list-group-item-light p-3" href="/Algorithm-4 (Ant)/index-ant.html" target="content-frame" style="color: antiquewhite;">Ant-TSP</a>
+                <a class="list-group-item list-group-item-action list-group-item-light p-3" href="decision-tree.html" target="content-frame" style="color: antiquewhite;">Decision Tree</a>
+                <a class="list-group-item list-group-item-action list-group-item-light p-3" href="neural-network.html" target="content-frame" style="color: antiquewhite;">N-Network</a>
+            </div>
+        </div>
+        <!-- Page content wrapper-->
+        <div id="page-content-wrapper">
+            <!-- Top navigation -->
+            <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
+                <!-- Navbar content -->
+            </nav>
+            <!-- Page content -->
+            <div class="container-fluid" id="content">
+                
+                <iframe id="content-frame" name="content-frame" src="" frameborder="0"></iframe>
+            </div>
+        </div>
+    </div>
+    <!-- Bootstrap core JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Core theme JS -->
+    <script src="./UI.js"></script>
+</body>
+</html>

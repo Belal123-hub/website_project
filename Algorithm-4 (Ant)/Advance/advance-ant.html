@@ -1,17 +1,30 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Advanced Ant Colony Optimization</title>
-    <link rel="stylesheet" type="text/css" href="advance-ant.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="advance-ant.css">
+    <title>TSP Ant Colony Optimization</title>
 </head>
 <body>
-    <h1>Traveling Salesman Problem - Ant Colony Optimization (Advanced)</h1>
-    <div id="aco">
-        <label for="numCities">Number of cities:</label>
-        <input type="number" id="numCities" name="numCities" min="1" max="50" value="10">
-        <button id="aco-start-button">Start</button>
-        <canvas id="aco-canvas" width="800" height="600"></canvas>
+    <h1>Traveling Salesman Problem - Ant Algorithm (Advance)</h1>
+    <div id="canvas-container">
+        <canvas id="aco-canvas" width="1000" height="400"></canvas>
     </div>
+
+    <div class="button-container">
+        <div class="left-side">
+            <label for="numCities" style="color: white;">Number of Cities:</label>
+            <input type="number" id="numCities" name="numCities" min="3" value="10" max="50">
+        </div>
+        <div class="right-side">
+            <button id="aco-start-button" style="color: green;">Start</button>
+            <a href="/Algorithm-4 (Ant)/index-ant.html" class="button">Go to Simple Version</a>
+        </div>
+    </div>
+
+    <p id="path-cost"></p>
+    
     <script src="advance-ant.js"></script>
 </body>
 </html>
