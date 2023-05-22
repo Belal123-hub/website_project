@@ -7,20 +7,24 @@
     <title>TSP Ant Colony Optimization</title>
 </head>
 <body>
-    <h1 style="color: white;">Traveling Salesman Problem - Ant Algorithm</h1>
+    <h1>Traveling Salesman Problem - Ant Algorithm</h1>
     <div id="canvas-container">
-        <canvas id="aco-canvas" width="600" height="600"></canvas>
+        <canvas id="aco-canvas" width="1000" height="400"></canvas>
     </div>
 
-    <label for="numCities" style="color: white;">Number of Cities:</label>
-    <input type="number" id="numCities" name="numCities" min="2" value="10"  max="50">
+    <div class="button-container">
+        <div class="left-side">
+            <label for="numCities" style="color: white;">Number of Cities:</label>
+            <input type="number" id="numCities" name="numCities" min="3" value="10" max="50">
+        </div>
+        <div class="right-side">
+            <button id="aco-start-button" style="color: green;">Start</button>
+            <a href="Advance/advance-ant.html" class="button">Go to Advanced Version</a>
+        </div>
+    </div>
 
-    <button id="aco-start-button" style="color: green;"><b>Start</b></button>
     <p id="path-cost"></p>
-
-    <!-- adding button for advance option -->
-    <a href="Advance/advance-ant.html" class="button">Go to Advanced Version</a>
-
+    
     <script src="ant.js"></script>
 </body>
 </html>

@@ -7,15 +7,20 @@
     <title>TSP Genetic Algorithm</title>
 </head>
 <body>
-    <h1 style="color: white;">Traveling Salesman Problem - Genetic Algorithm</h1>
+    <h1>Traveling Salesman Problem - Genetic Algorithm</h1>
     <div id="canvas-container">
         <canvas id="tsp-canvas" width="1000" height="400"></canvas>
     </div>
-
-    <label for="num-cities" style="color: white;">Number of Cities:</label>
-    <input type="number" id="num-cities" name="num-cities" min="3" value="10" max="50"/>
-
-    <button id="start-button" style="color: green;"><b>Start</b></button>
+    <div class="button-container">
+       <div class="left-side">
+           <label for="num-cities" style="color: white;">Number of Cities:</label>
+           <input type="number" id="num-cities" name="num-cities" min="3" value="10" max="50"/>
+        </div>
+        <div class="right-side">
+            <button id="start-button" style="color: green;">Start</button>
+            <a href="" class="button">Go to Advanced Version</a>
+        </div>
+    </div>
     <p id="path-cost"></p>
     <script src="script.js"></script>
 </body>

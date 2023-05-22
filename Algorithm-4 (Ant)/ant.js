@@ -16,7 +16,7 @@ class City {
 //to draw the cities/node
   draw() {
     ctx.beginPath();
-    ctx.arc(this.x, this.y, 6, 0, 2 * Math.PI);
+    ctx.arc(this.x, this.y, 5, 0, 2 * Math.PI);
     ctx.fillStyle = 'blue';
     ctx.fill();
     ctx.stroke();
@@ -87,7 +87,7 @@ class Ant {
     }
 
     ctx.strokeStyle = 'blue';
-    ctx.lineWidth = 3;  //route-width
+    ctx.lineWidth = 2;  //route-width
     ctx.stroke();
   }
 }
