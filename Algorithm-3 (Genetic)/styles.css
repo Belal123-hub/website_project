@@ -1,6 +1,6 @@
 body {
 
-    background-image: url(ashraf1.jpg);
+    background-color:darkslategrey;
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center center;
@@ -15,7 +15,7 @@ body {
 }
 
 #canvas-container {
-    border: 2px solid white;
+    border: 3px solid #A6819B;
 }
 
 #tsp-canvas {
