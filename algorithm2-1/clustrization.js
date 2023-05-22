@@ -82,57 +82,104 @@ function handleMouseDown(event) {
     // Return the resulting clusters
     return clusters;
 }
-function meanShiftClustering(data, bandwidth) {
-  var shiftedPoints = data.slice();
-  var convergenceThreshold = 0.0001;
+function meanShiftClustering(data, kernelBandwidth, convergenceThreshold) {
+  // Create a copy of the data points to avoid modifying the original array
 
+  // Initialize an array to store the mean shift vectors
+  let meanShiftVectors = new Array(data.length).fill([0, 0]);
+  // Function to calculate the Euclidean distance between two points
+  function euclideanDistance(a, b) {
+      return Math.sqrt((a.X - b.X) ** 2 + (a.Y - b.Y) ** 2);
+  }
+
+  // Function to compute the Gaussian kernel
   function gaussianKernel(distance, bandwidth) {
-    var radius = distance / bandwidth;
-    var coefficient = 1 / (bandwidth * Math.sqrt(2 * Math.PI));
-    return coefficient * Math.exp(-0.5 * radius * radius);
+      let exponent = -(distance * distance) / (2 * bandwidth * bandwidth);
+      return Math.exp(exponent);
   }
 
-  function euclideanDistance(point1, point2) {
-    return Math.sqrt(
-      Math.pow(point1.x - point2.x, 2) + Math.pow(point1.y - point2.y, 2)
-    );
-  }
+  // Function to compute the mean shift vector for a single point
+  function computeMeanShiftVector(point, data, kernelBandwidth) {
+      let numeratorSum = [0, 0];
+      let denominatorSum = 0;
 
-  function shiftPoint(point) {
-    var shift = { x: 0, y: 0 };
-    var shiftTotal = 0;
+      for (let i = 0; i < data.length; i++) {
+          let distance = euclideanDistance(point, data[i]);
+          let weight = gaussianKernel(distance, kernelBandwidth);
 
-    for (var i = 0; i < data.length; i++) {
-      var distance = euclideanDistance(point, data[i]);
-      var weight = gaussianKernel(distance, bandwidth);
-      shift.x += weight * data[i].x;
-      shift.y += weight * data[i].y;
-      shiftTotal += weight;
-    }
-
-    point.x = shift.x / shiftTotal;
-    point.y = shift.y / shiftTotal;
-  }
-
-  var converged = false;
-
-  while (!converged) {
-    converged = true;
-
-    for (var i = 0; i < shiftedPoints.length; i++) {
-      var oldPoint = Object.assign({}, shiftedPoints[i]);
-      shiftPoint(shiftedPoints[i]);
-      var distance = euclideanDistance(oldPoint, shiftedPoints[i]);
-
-      if (distance > convergenceThreshold) {
-        converged = false;
+          numeratorSum[0] += data[i].X * weight;
+          numeratorSum[1] += data[i].Y * weight;
+          denominatorSum += weight;
       }
-    }
+
+      let meanShiftX = numeratorSum[0] / denominatorSum - point.X;
+      let meanShiftY = numeratorSum[1] / denominatorSum - point.Y;
+
+      return [meanShiftX, meanShiftY];
   }
 
-  return shiftedPoints;
-}
+  // Perform mean shift iterations until convergence
+  let hasConverged = false;
+  while (!hasConverged) {
+      let maxShiftMagnitude = 0;
 
+      // Compute mean shift vectors for all points
+      for (let i = 0; i < data.length; i++) {
+          let meanShiftVector = computeMeanShiftVector(
+              data[i],
+              data,
+              kernelBandwidth
+          );
+          meanShiftVectors[i] = meanShiftVector;
+
+          let shiftMagnitude = euclideanDistance([0, 0], meanShiftVector);
+          if (shiftMagnitude > maxShiftMagnitude) {
+              maxShiftMagnitude = shiftMagnitude;
+          }
+      }
+
+      // Shift points towards higher density regions
+      for (let i = 0; i < data.length; i++) {
+          data[i].X += meanShiftVectors[i][0];
+          data[i].Y += meanShiftVectors[i][1];
+      }
+
+      // Check convergence
+      if (maxShiftMagnitude < convergenceThreshold) {
+          hasConverged = true;
+      }
+  }
+
+  // Assign points to clusters based on proximity
+  // Assign points to clusters based on proximity
+  let clusters = [];
+  for (let i = 0; i < points.length; i++) {
+      let clusterAssigned = false;
+
+      for (let j = 0; j < clusters.length; j++) {
+          let centroid = clusters[j].centroid;
+          let distance = euclideanDistance(points[i], centroid);
+
+          if (distance < kernelBandwidth) {
+              clusters[j].points.push(points[i]);
+              clusterAssigned = true;
+              break;
+          }
+      }
+
+      if (!clusterAssigned) {
+          clusters.push({
+              centroid: points[i],
+              points: [points[i]],
+          });
+      }
+  }
+
+  // Extract the points from each cluster into a separate array
+  let clusterPoints = clusters.map(cluster => cluster.points.map(point => point));
+
+  return clusterPoints;
+}
 function the_distance(point1, point2) {
     // Euclidean distance between two points
     return Math.sqrt((point1.x - point2.x) ** 2 + (point1.y - point2.y) ** 2);
@@ -235,11 +282,11 @@ function startButton() {
           }
       }
     }
-    if (algo=="DBSCAN.js") {
+     if (algo=="DBSCAN.js") {
 
         clusters = dbscan(points, epsilon, minPoints);
-        const numClusters = document.getElementById("clusterNum").value;
-        const colors = generateColors(numClusters); // Generate unique colors for each cluster
+        number_of_clusters= document.getElementById("clusterNum").value;
+        const colors = generateColors(number_of_clusters); // Generate unique colors for each cluster
       
         for (let i = 0; i < clusters.length; i++) {
           const cluster = clusters[i];
@@ -254,20 +301,33 @@ function startButton() {
         }
 
     } 
-    else {
-//
-number_of_clusters = document.getElementById("clusterNum").value;
+    if (algo=="mean-shift.js") {
+// Get the number of clusters from the input field
+ number_of_clusters = parseInt(document.getElementById('clusterNum').value);
 
-clusters = meanShiftClustering(points, number_of_clusters);
+// Clear the canvas
+context.clearRect(0, 0, canvas.width, canvas.height);
+
+// Perform mean shift clustering on the points
+ clusters = meanShiftClustering(points, 60, 0.0001);
+
+// Generate an array of distinct colors based on the number of clusters
+const colors = generateDistinctColors(number_of_clusters);
+
+// Visualize the clusters with different colors
 for (let i = 0; i < clusters.length; i++) {
-  const color = get_color_rondomly();
-  for (let j = 0; j < clusters[i].length; j++) {
-      const { x, y } = clusters[i][j];
-      context.fillStyle = color;
-      context.beginPath();
-      context.arc(x - 8, y - 8, 5, 0, Math.PI * 2);
-      context.fill();
-  }
+    const color = colors[i % colors.length]; // Get the color based on the index
+
+    for (let j = 0; j < clusters[i].length; j++) {
+        const x = clusters[i][j].X;
+        const y = clusters[i][j].Y;
+
+        // Set the fill style to the cluster color
+        context.fillStyle = color;
+        context.beginPath();
+        context.arc(x - 8, y - 8, 8, 0, Math.PI * 2);
+        context.fill();
+    }
 }
     }
 }
@@ -287,6 +347,20 @@ for (let i = 0; i < numClusters; i++) {
   colors.push(color);
 }
 return colors;
+}
+function generateDistinctColors(numColors) {
+  var colors = [];
+
+  // Generate distinct RGB colors
+  for (let i = 0; i < numColors; i++) {
+      const hue = (i * 360) / numColors;
+      const saturation = 100;
+      const lightness = 50;
+      const color = `hsl(${hue}, ${saturation}%, ${lightness}%)`;
+      colors.push(color);
+  }
+
+  return colors;
 }
     // delete data
 function clearButton() {

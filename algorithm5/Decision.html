@@ -10,7 +10,7 @@
 </head>
 
 <body>
-    <header>
+    <!-- <header>
         <div class="flex-wrapper">
             <div id="left_logo"> <img class="logo" src="images.jpeg"></div>
             <button onclick="redirectTo('page1.html')">A*</button>
@@ -20,17 +20,18 @@
             <button onclick="redirectTo('Decision.html')">Decision Tree</button>
             <button onclick="redirectTo('page6.html')">Neural network</button>
         </div>
-    </header>
+    </header> -->
 
     <div class="wrapper" id="wrapper">
         <div class="toolbar">
+            <textarea id="input_data" name="input_data" cols="40" rows="18"></textarea></p>
+            
             <input class ="button" type="button" id="getFile_button" value="build tree">
             <input class ="button" type="button" id="start_button" value="start">
             <input class ="button" type="button" id="reset_button" value="clear">
             <input id="file_input" type="file">
             <label class="label" for='file_input'>upload file</label>
             
-            <textarea id="input_data" name="input_data" cols="40" rows="18"></textarea></p>
 
         </div>
         <div class="canvas">

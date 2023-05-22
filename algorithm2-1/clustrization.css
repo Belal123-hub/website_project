@@ -4,15 +4,19 @@ body{
   background-color: #1e1f29;
 }
 .dropdown {
-  position: relative;
+  position: absolute;
+  top: 70px; /* Adjust the top position as needed */
+  left: 150px; /* Adjust the right position as needed */
   display: inline-block;
-
 }
+
+
 .dropdown button{
-  background-color:purple ;
+  background-color:transparent ;
   border-radius: 25px;
+  padding: 0.5em 1em;
+  color: aliceblue;
 }
-
 .dropdown-content {
   position: absolute;
   top: 100%;
@@ -42,9 +46,12 @@ body{
   font-weight: inherit;
   font-size: inherit;
   padding: 0.5em 1em;
-  background-color: transparent;
+  background-color:transparent;
+  border-radius: 25px;
   transition: background-color 0.3s linear, transform 0.15s ease-out;
   margin-inline: 70px;
+  box-shadow:none;
+  outline: none;
 }
 .general-button:hover{
   cursor: pointer;
@@ -63,6 +70,7 @@ body{
     margin-top: 40px;
     margin-left: 280px;
     background-color:#252630;
+    border-radius: 25px;
 }
 
 .navbar{
