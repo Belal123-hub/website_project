@@ -20,7 +20,7 @@ body{
     height: 100vh;
     margin: 0 ;
     padding: 0;
-    background-color: #1e1f29;
+    background-color: darkslategray;
     color: #fff;
 }
 .page{
@@ -95,8 +95,7 @@ body{
     background-color: transparent;
     height: 100%;
 }
-.custom-select:hover{
-}
+
 .custom-select select {
     font-size: inherit;
 }

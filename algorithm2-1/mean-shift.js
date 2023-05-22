@@ -1,145 +1,175 @@
-canvas = document.getElementById("myCanvas");
-context = canvas.getContext("2d");
+
+var canvas = document.getElementById('myCanvas');
+var context = canvas.getContext('2d');
 
 canvas.addEventListener('mousedown', handleMouseDown);
 
 var points = [];
-
 function handleMouseDown(event) {
-  var coordin1 = event.clientX - canvas.offsetLeft;
-  var coordin2 = event.clientY - canvas.offsetTop;
-  context.fillStyle = 'black';
-  context.beginPath();
-  context.arc(coordin1 - 8, coordin2 - 8, 5, 0, Math.PI * 2);
-  context.fill();
-  points.push({ x: coordin1, y: coordin2 });
-}
-function meanShiftClustering(data, bandwidth) {
-  var shiftedPoints = data.slice();
-  var convergenceThreshold = 0.0001;
-
-  function gaussianKernel(distance, bandwidth) {
-    var radius = distance / bandwidth;
-    var coefficient = 1 / (bandwidth * Math.sqrt(2 * Math.PI));
-    return coefficient * Math.exp(-0.5 * radius * radius);
-  }
-
-  function euclideanDistance(point1, point2) {
-    var dx = point1.x - point2.x;
-    var dy = point1.y - point2.y;
-    return Math.sqrt(dx * dx + dy * dy);
-  }
-  
-  function shiftPoint(point) {
-    var shift = { x: 0, y: 0 };
-    var shiftTotal = 0;
-
-    for (var i = 0; i < data.length; i++) {
-      var distance = euclideanDistance(point, data[i]);
-      var weight = gaussianKernel(distance, bandwidth);
-      shift.x += weight * data[i].x;
-      shift.y += weight * data[i].y;
-      shiftTotal += weight;
-    }
-
-    point.x = shift.x / shiftTotal;
-    point.y = shift.y / shiftTotal;
-  }
-
-  var converged = false;
-
-  while (!converged) {
-    converged = true;
-
-    for (var i = 0; i < shiftedPoints.length; i++) {
-      var oldPoint = Object.assign({}, shiftedPoints[i]);
-      shiftPoint(shiftedPoints[i]);
-      var distance = euclideanDistance(oldPoint, shiftedPoints[i]);
-
-      if (distance > convergenceThreshold) {
-        converged = false;
-      }
-    }
-  }
-
-  // Assign cluster indices to points
-  var clusterIndex = 0;
-  for (var i = 0; i < shiftedPoints.length; i++) {
-    if (!shiftedPoints[i].clusterIndex) {
-      assignCluster(shiftedPoints[i], clusterIndex);
-      clusterIndex++;
-    }
-  }
-
-  function assignCluster(shiftedPoints, data, bandwidth) {
-    for (var i = 0; i < shiftedPoints.length; i++) {
-      var shift = { x: 0, y: 0 };
-      var shiftTotal = 0;
-  
-      for (var j = 0; j < data.length; j++) {
-        var distance = euclideanDistance(shiftedPoints[i], data[j]);
-        var weight = gaussianKernel(distance, bandwidth);
-        shift.x += weight * data[j].x;
-        shift.y += weight * data[j].y;
-        shiftTotal += weight;
-      }
-  
-      shiftedPoints[i].x = shift.x / shiftTotal;
-      shiftedPoints[i].y = shift.y / shiftTotal;
-    }
-  }
-  
-
-  return shiftedPoints;
-}
-
-
-function get_color_randomly() {
-  const red = Math.floor(Math.random() * 256);
-  const green = Math.floor(Math.random() * 256);
-  const blue = Math.floor(Math.random() * 256);
-  return `rgb(${red}, ${green}, ${blue})`;
-}
-
-function renderPoints(points, color) {
-  for (var i = 0; i < points.length; i++) {
-    context.fillStyle = color;
+    var x = event.clientX - canvas.offsetLeft;
+    var y = event.clientY - canvas.offsetTop;
+    context.fillStyle = 'black';
     context.beginPath();
-    context.arc(points[i].x - 8, points[i].y - 8, 5, 0, Math.PI * 2);
+    context.arc(x - 8, y - 8, 5, 0, Math.PI * 2);
     context.fill();
-  }
-}
-function testColorFunction() {
-  var color = get_color_randomly();
-  console.log(color);
+    points.push({ X: x, Y: y });
 }
 
-// Call the test function to check the color output
-testColorFunction();
-testColorFunction();
+
+function meanShiftClustering(data, kernelBandwidth, convergenceThreshold) {
+    // Create a copy of the data points to avoid modifying the original array
+
+    // Initialize an array to store the mean shift vectors
+    let meanShiftVectors = new Array(data.length).fill([0, 0]);
+    // Function to calculate the Euclidean distance between two points
+    function euclideanDistance(a, b) {
+        return Math.sqrt((a.X - b.X) ** 2 + (a.Y - b.Y) ** 2);
+    }
+
+    // Function to compute the Gaussian kernel
+    function gaussianKernel(distance, bandwidth) {
+        let exponent = -(distance * distance) / (2 * bandwidth * bandwidth);
+        return Math.exp(exponent);
+    }
+
+    // Function to compute the mean shift vector for a single point
+    function computeMeanShiftVector(point, data, kernelBandwidth) {
+        let numeratorSum = [0, 0];
+        let denominatorSum = 0;
+
+        for (let i = 0; i < data.length; i++) {
+            let distance = euclideanDistance(point, data[i]);
+            let weight = gaussianKernel(distance, kernelBandwidth);
+
+            numeratorSum[0] += data[i].X * weight;
+            numeratorSum[1] += data[i].Y * weight;
+            denominatorSum += weight;
+        }
+
+        let meanShiftX = numeratorSum[0] / denominatorSum - point.X;
+        let meanShiftY = numeratorSum[1] / denominatorSum - point.Y;
+
+        return [meanShiftX, meanShiftY];
+    }
+
+    // Perform mean shift iterations until convergence
+    let hasConverged = false;
+    while (!hasConverged) {
+        let maxShiftMagnitude = 0;
+
+        // Compute mean shift vectors for all points
+        for (let i = 0; i < data.length; i++) {
+            let meanShiftVector = computeMeanShiftVector(
+                data[i],
+                data,
+                kernelBandwidth
+            );
+            meanShiftVectors[i] = meanShiftVector;
+
+            let shiftMagnitude = euclideanDistance([0, 0], meanShiftVector);
+            if (shiftMagnitude > maxShiftMagnitude) {
+                maxShiftMagnitude = shiftMagnitude;
+            }
+        }
+
+        // Shift points towards higher density regions
+        for (let i = 0; i < data.length; i++) {
+            data[i].X += meanShiftVectors[i][0];
+            data[i].Y += meanShiftVectors[i][1];
+        }
+
+        // Check convergence
+        if (maxShiftMagnitude < convergenceThreshold) {
+            hasConverged = true;
+        }
+    }
+
+    // Assign points to clusters based on proximity
+    // Assign points to clusters based on proximity
+    let clusters = [];
+    for (let i = 0; i < points.length; i++) {
+        let clusterAssigned = false;
+
+        for (let j = 0; j < clusters.length; j++) {
+            let centroid = clusters[j].centroid;
+            let distance = euclideanDistance(points[i], centroid);
+
+            if (distance < kernelBandwidth) {
+                clusters[j].points.push(points[i]);
+                clusterAssigned = true;
+                break;
+            }
+        }
+
+        if (!clusterAssigned) {
+            clusters.push({
+                centroid: points[i],
+                points: [points[i]],
+            });
+        }
+    }
+
+    // Extract the points from each cluster into a separate array
+    let clusterPoints = clusters.map(cluster => cluster.points.map(point => point));
+
+    return clusterPoints;
+}
+
+
+// function getRandomColor() {
+//     // Generate a random RGB color string
+//     const r = Math.floor(Math.random() * 256);
+//     const g = Math.floor(Math.random() * 256);
+//     const b = Math.floor(Math.random() * 256);
+//     return `rgb(${r}, ${g}, ${b})`;
+// }
 
 function startButton() {
-  var number_of_clusters = document.getElementById('clusterNum').value;
-  var clusters = meanShiftClustering(points, number_of_clusters);
+  // Get the number of clusters from the input field
+  var numClusters = parseInt(document.getElementById('clusterNum').value);
 
-  var clusteredPoints = [];
-  for (var i = 0; i < number_of_clusters; i++) {
-    clusteredPoints.push([i]);
-  }
+  // Clear the canvas
+  context.clearRect(0, 0, canvas.width, canvas.height);
 
-  for (var i = 0; i < clusters.length; i++) {
-    var clusterIndex = clusters[i].clusterIndex;
-    clusteredPoints[clusterIndex].push(clusters[i]);
-  }
+  // Perform mean shift clustering on the points
+  var clusters = meanShiftClustering(points, 60, 0.0001);
 
-  for (var i = 0; i < clusteredPoints.length; i++) {
-    var color = get_color_randomly();
-    renderPoints(clusteredPoints[i], color);
+  // Generate an array of distinct colors based on the number of clusters
+  var colors = generateDistinctColors(numClusters);
+
+  // Visualize the clusters with different colors
+  for (let i = 0; i < clusters.length; i++) {
+      const color = colors[i % colors.length]; // Get the color based on the index
+
+      for (let j = 0; j < clusters[i].length; j++) {
+          const x = clusters[i][j].X;
+          const y = clusters[i][j].Y;
+
+          // Set the fill style to the cluster color
+          context.fillStyle = color;
+          context.beginPath();
+          context.arc(x - 8, y - 8, 8, 0, Math.PI * 2);
+          context.fill();
+      }
   }
 }
+function generateDistinctColors(numColors) {
+  var colors = [];
+
+  // Generate distinct RGB colors
+  for (let i = 0; i < numColors; i++) {
+      const hue = (i * 360) / numColors;
+      const saturation = 100;
+      const lightness = 50;
+      const color = `hsl(${hue}, ${saturation}%, ${lightness}%)`;
+      colors.push(color);
+  }
+
+  return colors;
+}
+
 
 function clearButton() {
-  context.clearRect(0, 0, canvas.width, canvas.height);
-  points = [];
+    context.clearRect(0, 0, canvas.width, canvas.height);
+    points = [];
 }
-
