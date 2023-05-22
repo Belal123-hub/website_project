@@ -1,7 +1,5 @@
-// ant.js
-
-const canvas = document.getElementById('aco-canvas');
-const ctx = canvas.getContext('2d');
+const acoCanvas = document.getElementById('aco-canvas');
+const ctx = acoCanvas.getContext('2d');
 
 const cityRadius = 6;
 const foodRadius = 5;
@@ -45,25 +43,27 @@ class Food {
 }
 
 class Ant {
-  constructor(cities, pheromones) {
+  constructor(cities, pheromones, homeCityIndex) {
     this.cities = cities;
     this.pheromones = pheromones;
     this.tour = [];
     this.distance = 0;
 
-    const startCity = Math.floor(Math.random() * cities.length);
-    this.tour.push(startCity);
+    this.tour.push(homeCityIndex);
 
-    while (this.tour.length < cities.length) {
-      const nextCity = this.pickNextCity();
-      this.tour.push(nextCity);
-    }
+    this.homeCityIndex = homeCityIndex;
+    this.currentCityIndex = homeCityIndex;
 
-    this.distance = this.calculateDistance();
+    this.foodIndex = null;
+    this.hasFood = false;
+    this.foodPath = [];
+    this.foodDistance = 0;
+
+    this.calculateDistance();
   }
 
   pickNextCity() {
-    const lastCity = this.tour[this.tour.length - 1];
+    const lastCity = this.currentCityIndex;
     const probabilities = [];
 
     for (let i = 0; i < this.cities.length; i++) {
@@ -96,35 +96,89 @@ class Ant {
       distance += this.cities[this.tour[i]].distanceTo(this.cities[this.tour[i + 1]]);
     }
 
-    return distance;
+    this.distance = distance;
+  }
+
+  updateFoodPath() {
+    if (this.hasFood) {
+      const lastCity = this.foodPath[this.foodPath.length - 1];
+      const targetCity = this.cities[this.foodIndex];
+
+      this.foodPath.push(targetCity);
+      this.foodDistance += lastCity.distanceTo(targetCity);
+    } else {
+      const targetCity = this.cities[this.foodIndex];
+
+      this.foodPath = [targetCity];
+      this.foodDistance = this.cities[this.currentCityIndex].distanceTo(targetCity);
+    }
+  }
+
+  moveToNextCity() {
+    const nextCityIndex = this.pickNextCity();
+    const nextCity = this.cities[nextCityIndex];
+
+    this.tour.push(nextCityIndex);
+    this.distance += this.cities[this.currentCityIndex].distanceTo(nextCity);
+    this.currentCityIndex = nextCityIndex;
+
+    if (this.hasFood) {
+      this.updateFoodPath();
+    }
+
+    if (this.currentCityIndex === this.foodIndex) {
+      this.hasFood = true;
+      this.foodIndex = null;
+    }
+
+    if (this.hasFood && this.currentCityIndex === this.homeCityIndex) {
+      this.hasFood = false;
+      this.foodPath = [];
+      this.foodDistance = 0;
+    }
   }
 
   drawPath() {
     if (this.tour.length < 2) {
       return;
     }
-  
+
     ctx.beginPath();
     ctx.moveTo(this.cities[this.tour[0]].x, this.cities[this.tour[0]].y);
-  
+
     for (let i = 1; i < this.tour.length; i++) {
       const city = this.cities[this.tour[i]];
       ctx.lineTo(city.x, city.y);
     }
-  
+
     ctx.strokeStyle = 'blue';
     ctx.lineWidth = trailWidth;
     ctx.stroke();
   }
-  
 
   draw() {
-    const city = this.cities[this.tour[0]];
+    const city = this.cities[this.currentCityIndex];
     ctx.beginPath();
     ctx.arc(city.x, city.y, antRadius, 0, 2 * Math.PI);
-    ctx.fillStyle = 'red';
+    ctx.fillStyle = this.hasFood ? 'green' : 'red';
     ctx.fill();
     ctx.stroke();
+  }
+
+  drawFoodPath() {
+    if (this.hasFood && this.foodPath.length > 1) {
+      ctx.beginPath();
+      ctx.moveTo(this.cities[this.currentCityIndex].x, this.cities[this.currentCityIndex].y);
+
+      for (let i = 1; i < this.foodPath.length; i++) {
+        const city = this.foodPath[i];
+        ctx.lineTo(city.x, city.y);
+      }
+
+      ctx.strokeStyle = 'green';
+      ctx.lineWidth = trailWidth;
+      ctx.stroke();
+    }
   }
 }
 
@@ -133,102 +187,63 @@ let foods = [];
 let pheromones = [];
 let ants = [];
 
-let numCities = 10;
-let numFoods = 20;
-let numAnts = 50;
-let numIterations = 100;
-let rho = 0.1;
-let Q = 1;
-let initialValue = 0.1;
-let iteration = 0;
-let isRunning = false;
+let homeCityIndex = -1;
+
+const canvas = document.getElementById('aco-canvas');
 
 const startButton = document.getElementById('aco-start-button');
-startButton.addEventListener('click', startAlgorithm);
+startButton.addEventListener('click', () => {
+  const numCitiesInput = document.getElementById('numCities');
+  const numCities = parseInt(numCitiesInput.value);
 
-canvas.addEventListener('click', addFood);
+  const numAnts = 50;
+  const numIterations = 100;
+  const rho = 0.1;
+  const Q = 1;
+  const initialValue = 0.1;
 
-function startAlgorithm() {
-  if (!isRunning) {
-    numCities = parseInt(document.getElementById('numCities').value);
-    numFoods = 20;
-    numAnts = 50;
-    numIterations = 100;
-    rho = 0.1;
-    Q = 1;
-    initialValue = 0.1;
-    iteration = 0;
+  cities = createRandomCities(numCities);
+  pheromones = createPheromones(numCities, initialValue);
 
-    cities = createRandomCities(numCities);
-    pheromones = createPheromones(numCities, initialValue);
-    ants = createAnts(numAnts, cities, pheromones);
+  const homeCity = new City(canvas.width / 2, canvas.height / 2);
+  cities.push(homeCity);
+  homeCityIndex = cities.length - 1;
 
-    foods = [];
-    isRunning = true;
-    startButton.textContent = 'Stop';
+  ants = createAnts(numAnts, homeCityIndex);
 
-    runAlgorithm();
-  } else {
-    isRunning = false;
-    startButton.textContent = 'Start';
-  }
-}
-
-function runAlgorithm() {
-  if (!isRunning) {
-    return;
-  }
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  drawCities();
+  drawFoods();
 
   for (let i = 0; i < numIterations; i++) {
-    if (!isRunning) {
-      return;
-    }
-
-    moveAnts();
-    updatePheromones();
-    updateCanvas();
-    iteration++;
-
-    if (i === numIterations - 1) {
-      isRunning = false;
-      startButton.textContent = 'Start';
-    }
+    updateAnts();
+    updatePheromones(rho);
+    updateBestTour();
   }
+});
 
-  if (isRunning) {
-    setTimeout(runAlgorithm, 100);
-  }
-}
+canvas.addEventListener('click', (e) => {
+  const rect = canvas.getBoundingClientRect();
+  const x = e.clientX - rect.left;
+  const y = e.clientY - rect.top;
 
+  const food = new Food(x, y);
+  foods.push(food);
 
-function addFood(event) {
-  if (isRunning) {
-    const rect = canvas.getBoundingClientRect();
-    const x = event.clientX - rect.left;
-    const y = event.clientY - rect.top;
-    foods.push(new Food(x, y));
-    updateCanvas();
-  }
-}
+  drawFoods();
+});
 
 function createRandomCities(numCities) {
   const cities = [];
 
   for (let i = 0; i < numCities; i++) {
-    cities.push(new City(Math.random() * canvas.width, Math.random() * canvas.height));
+    const x = Math.floor(Math.random() * (canvas.width - 2 * cityRadius) + cityRadius);
+    const y = Math.floor(Math.random() * (canvas.height - 2 * cityRadius) + cityRadius);
+    const city = new City(x, y);
+    cities.push(city);
   }
 
   return cities;
-}
-
-function createAnts(numAnts, cities, pheromones) {
-  const ants = [];
-
-  for (let i = 0; i < numAnts; i++) {
-    ants.push(new Ant(cities, pheromones));
-  }
-
-  return ants;
 }
 
 function createPheromones(numCities, initialValue) {
@@ -236,65 +251,149 @@ function createPheromones(numCities, initialValue) {
 
   for (let i = 0; i < numCities; i++) {
     const row = [];
+
     for (let j = 0; j < numCities; j++) {
       row.push(initialValue);
     }
+
     pheromones.push(row);
   }
 
   return pheromones;
 }
 
-function moveAnts() {
-  for (const ant of ants) {
-    const nextCity = ant.pickNextCity();
-    ant.tour.push(nextCity);
-    ant.distance += ant.cities[ant.tour[ant.tour.length - 2]].distanceTo(ant.cities[nextCity]);
+function createAnts(numAnts, homeCityIndex) {
+  const ants = [];
+
+  for (let i = 0; i < numAnts; i++) {
+    const ant = new Ant(cities, pheromones, homeCityIndex);
+    ants.push(ant);
+  }
+
+  return ants;
+}
+
+function updateAnts() {
+  for (let i = 0; i < ants.length; i++) {
+    ants[i].moveToNextCity();
+  }
+
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  drawCities();
+  drawFoods();
+  drawPheromones();
+  drawAnts();
+  drawBestTour();
+}
+
+function updatePheromones(rho) {
+  for (let i = 0; i < pheromones.length; i++) {
+    for (let j = 0; j < pheromones[i].length; j++) {
+      pheromones[i][j] *= 1 - rho;
+    }
+  }
+
+  for (let i = 0; i < ants.length; i++) {
+    const ant = ants[i];
+
+    for (let j = 0; j < ant.tour.length - 1; j++) {
+      const cityA = ant.tour[j];
+      const cityB = ant.tour[j + 1];
+
+      pheromones[cityA][cityB] += Q / ant.distance;
+      pheromones[cityB][cityA] += Q / ant.distance;
+    }
   }
 }
 
-function updatePheromones() {
-  const pheromonesUpdate = createPheromones(pheromones.length, 0);
+function updateBestTour() {
+  let bestDistance = Number.MAX_VALUE;
+  let bestAnt = null;
 
-  for (const ant of ants) {
-    const T = Q / ant.distance;
-    for (let i = 0; i < ant.tour.length - 1; i++) {
-      const city1 = ant.tour[i];
-      const city2 = ant.tour[i + 1];
-      pheromonesUpdate[city1][city2] += T;
-      pheromonesUpdate[city2][city1] += T;
+  for (let i = 0; i < ants.length; i++) {
+    const ant = ants[i];
+
+    if (ant.distance < bestDistance) {
+      bestDistance = ant.distance;
+      bestAnt = ant;
     }
   }
+
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  drawCities();
+  drawFoods();
+  drawPheromones();
+  drawBestTour();
+
+  if (bestAnt) {
+    bestAnt.drawPath();
+    bestAnt.draw();
+    bestAnt.drawFoodPath();
+  }
+}
+
+function drawCities() {
+  for (let i = 0; i < cities.length; i++) {
+    cities[i].draw();
+  }
+}
+
+function drawFoods() {
+  for (let i = 0; i < foods.length; i++) {
+    foods[i].draw();
+  }
+}
+
+function drawPheromones() {
+  const maxValue = Math.max(...pheromones.flat());
 
   for (let i = 0; i < pheromones.length; i++) {
-    for (let j = 0; j < pheromones.length; j++) {
-      pheromones[i][j] = pheromones[i][j] * (1 - rho) + pheromonesUpdate[i][j];
+    for (let j = 0; j < pheromones[i].length; j++) {
+      const pheromone = pheromones[i][j];
+      const alpha = pheromone / maxValue;
+
+      if (pheromone > 0) {
+        ctx.beginPath();
+        ctx.moveTo(cities[i].x, cities[i].y);
+        ctx.lineTo(cities[j].x, cities[j].y);
+        ctx.strokeStyle = `rgba(0, 0, 255, ${alpha})`;
+        ctx.lineWidth = trailWidth;
+        ctx.stroke();
+      }
     }
   }
 }
 
-function updateCanvas() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-  for (const city of cities) {
-    city.draw();
+function drawAnts() {
+  for (let i = 0; i < ants.length; i++) {
+    ants[i].draw();
   }
-
-  for (const food of foods) {
-    food.draw();
-  }
-
-  for (const ant of ants) {
-    ant.drawPath();
-  }
-
-  for (const ant of ants) {
-    ant.draw();
-  }
-
-  ctx.font = '14px Arial';
-  ctx.fillStyle = 'black';
-  ctx.fillText(`Iteration: ${iteration}`, 10, canvas.height - 10);
 }
 
-updateCanvas();
+function drawBestTour() {
+  let bestDistance = Number.MAX_VALUE;
+  let bestAnt = null;
+
+  for (let i = 0; i < ants.length; i++) {
+    const ant = ants[i];
+
+    if (ant.distance < bestDistance) {
+      bestDistance = ant.distance;
+      bestAnt = ant;
+    }
+  }
+
+  if (bestAnt && bestAnt.tour.length > 1) {
+    ctx.beginPath();
+    ctx.moveTo(cities[bestAnt.tour[0]].x, cities[bestAnt.tour[0]].y);
+
+    for (let i = 1; i < bestAnt.tour.length; i++) {
+      const city = cities[bestAnt.tour[i]];
+      ctx.lineTo(city.x, city.y);
+    }
+
+    ctx.strokeStyle = 'red';
+    ctx.lineWidth = trailWidth;
+    ctx.stroke();
+  }
+}
