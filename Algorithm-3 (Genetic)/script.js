@@ -14,7 +14,7 @@ class City {
         return Math.sqrt(dx * dx + dy * dy);
     }
 
-    //node
+    //to draw the cities/node
     draw() {
         ctx.beginPath();
         ctx.arc(this.x, this.y, 5, 0, 2 * Math.PI);

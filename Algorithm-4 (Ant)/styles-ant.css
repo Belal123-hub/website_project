@@ -1,6 +1,6 @@
 body {
 
-    background-image: url(ashraf2.jpg);
+    background-color:darkslategrey;
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center center;
@@ -14,8 +14,15 @@ body {
     margin: 0;
 }
 
+h1{
+    color: antiquewhite;
+}
+
+
 #canvas-container {
-    border: 7px solid white;
+    border: 3px solid #A6819B;
+    background-color:#252630;
+    border-radius: 25px;
 }
 
 #aco-canvas {
@@ -25,24 +32,92 @@ body {
 
 #path-cost {
     color: white;
-    font-size: 24px;
+    font-size: 15px;
 
 }
 
 button {
-    font-size: 1.5rem;
-    padding: 5px 10px;
+    font-size: 1.2rem;
+    padding: 10px 20px;
     cursor: pointer;
+    background-color: antiquewhite;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    margin-top: 7px;
+    transition: background-color 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
+
+button:hover {
+    background-color: #45a049;
+    transform: scale(1.0);
+}
+
+button:active {
+    background-color: #3e8742;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+    transform: scale(0.95);
+}
+
+label {
+    color: white;
+    margin-top: 1px;
+}
+
+input[type="number"] {
+    width: 70px;
+    padding: 1px;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
 /* style for Advance version button*/
 .button {
     display: inline-block;
-    padding: 10px 10px;
+    padding: 2px 2px;
+    cursor: pointer;
     color: white;
-    background-color:maroon;
+    border-radius: 20px;
+    background-color:rgb(95, 107, 216);
     text-decoration: none;
     text-align: center;
   }
+
   
+/* Existing CSS styles */
+
+.button-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.left-side {
+    display: flex;
+    align-items: center;
+}
+
+.left-side label {
+    color: white;
+    font-size: 1.2rem;
+    margin-right: 1px; /* Adjust the margin value as needed */
+}
+
+.left-side input[type="number"] {
+    width: 70px;
+    padding: 1px;
+    margin-right: 120px; /* Adjust the margin value as needed */
+    border-radius: 5px; /* Add border radius to create rounded corners */
+    border: none; /* Remove the border */
+    background-color: #e6e6e6; /* Add a background color */
+    font-size: 1rem; /* Adjust the font size as needed */
+}
 
 
+.button-container .button {
+    padding: 10px 20px;
+    margin-left: 120px; /* Adjust the margin value as needed */
+    margin-top: 5px; /* Adjust the margin value as needed */
+}
