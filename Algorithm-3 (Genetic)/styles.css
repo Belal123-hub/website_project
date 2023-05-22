@@ -102,6 +102,7 @@ input[type="number"] {
 
 .left-side label {
     color: white;
+    font-size: 1.2rem;
     margin-right: 1px; /* Adjust the margin value as needed */
 }
 
@@ -109,7 +110,12 @@ input[type="number"] {
     width: 70px;
     padding: 1px;
     margin-right: 120px; /* Adjust the margin value as needed */
+    border-radius: 5px; /* Add border radius to create rounded corners */
+    border: none; /* Remove the border */
+    background-color: #e6e6e6; /* Add a background color */
+    font-size: 1rem; /* Adjust the font size as needed */
 }
+
 
 .button-container .button {
     padding: 10px 20px;
