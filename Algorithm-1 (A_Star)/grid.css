@@ -17,6 +17,7 @@
     background: #1e1f29;
     border: 2px solid var(--closed-path);
     overflow: hidden;
+    border-radius: 25px;
 }
 .row{
     display: flex;
