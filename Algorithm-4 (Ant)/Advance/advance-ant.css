@@ -84,8 +84,6 @@ input[type="number"] {
     text-align: center;
   }
 
-  
-/* Existing CSS styles */
 
 .button-container {
     display: flex;
@@ -102,22 +100,22 @@ input[type="number"] {
 .left-side label {
     color: white;
     font-size: 1.2rem;
-    margin-right: 1px; /* Adjust the margin value as needed */
+    margin-right: 1px;
 }
 
 .left-side input[type="number"] {
     width: 70px;
     padding: 1px;
-    margin-right: 120px; /* Adjust the margin value as needed */
-    border-radius: 5px; /* Add border radius to create rounded corners */
-    border: none; /* Remove the border */
-    background-color: #e6e6e6; /* Add a background color */
-    font-size: 1rem; /* Adjust the font size as needed */
+    margin-right: 120px;
+    border-radius: 5px;
+    border: none;
+    background-color: #e6e6e6; 
+    font-size: 1rem;
 }
 
 
 .button-container .button {
     padding: 10px 20px;
-    margin-left: 120px; /* Adjust the margin value as needed */
-    margin-top: 5px; /* Adjust the margin value as needed */
+    margin-left: 120px;
+    margin-top: 5px;
 }
