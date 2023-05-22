@@ -44,6 +44,8 @@ header > div p {
     margin-left: auto;
     margin-right: auto;
     padding-top: 50px;
+    color: rgb(69, 8, 8);
+    font-size: 25px;
 }
 
 input{
@@ -89,10 +91,10 @@ input{
     block-size: 20px;
 }
 .button:hover {
-    background: #475b94;
+    background:rgb(49, 160, 111);
 }
 .label:hover{
-    background: #475b94;
+    background: rgb(49, 160, 111);
 }
 
 .label {
@@ -128,13 +130,13 @@ input{
 	content:' ';
 	position: absolute; 
     top: 0; right: 50%;
-	border-top: 1px solid #831818;
+	border-top: 1px solid black;
 	width: 50%; 
     height: 20px;
 }
 .tree li::after{
 	right: auto; left: 50%;
-	border-left: 1px solid #831818;
+	border-left: 1px solid black;
 }
 
 .tree li:only-child::after, .tree li:only-child::before {
@@ -150,7 +152,7 @@ input{
 }
 
 .tree li:last-child::before{
-	border-right: 1px solid #831818;
+	border-right: 1px solid black;
 	border-radius: 0 5px 0 0;
 }
 
@@ -163,12 +165,12 @@ input{
 	position: absolute; 
     top: 0; 
     left: 50%;
-	border-left: 1px solid #831818;
+	border-left: 1px solid black;
 	width: 0; height: 20px;
 }
 
 .tree li a{
-    background: #f5f5f5;
+    background: gray;
 	border: 1px solid #140101;
     min-width: 120px;
     max-width: min-content;
@@ -181,4 +183,9 @@ input{
 	display: inline-block;
 	border-radius: 25px;
     
+}
+.toolbar textarea{
+    background-color:#252630;
+    color:aliceblue;
+    border-radius: 25px;
 }

@@ -32,7 +32,7 @@ async function bypassTree() {
     while(true) {
         if(!currentNode.wasAdded){
             currentNode.wasAdded = true;
-            await gradient('rgb(255, 255, 255)', 'rgb(36, 122, 191)', currentNode);
+            await gradient('rgb(100, 100, 100)', 'rgb(49, 160, 111)', currentNode);
             await sleep(100);
         }
         for(let j = 0; j<currentNode.branches.length; j++) {
@@ -44,7 +44,7 @@ async function bypassTree() {
         } 
         if((currentNode.atribute === root.data[0][root.data[0].length-1])&&(!currentNode.wasPainted)) {
             currentNode.wasPainted = true;
-            await gradient('rgb(255, 255, 255)', 'rgb(36, 122, 191)', currentNode);
+            await gradient('rgb(100, 100, 100)', 'rgb(49, 160, 111)', currentNode);
             break;
         }
         counter--;
