@@ -10,7 +10,7 @@
     --bs-body-line-height: 1.5;
     --bs-body-color: #212529;
     --bs-body-bg: darkslategrey;
-    --bs-border-width: 2px;
+    --bs-border-width: 0px;
     --bs-border-style: solid;
     --bs-border-color: #A6819B;
     --bs-border-color-translucent: rgba(0, 0, 0, 0.175);
@@ -83,7 +83,7 @@
     --bs-list-group-color: #212529;
     --bs-list-group-bg: rgb(85, 121, 121);
     --bs-list-group-border-color: rgba(0, 0, 0, 0.125);
-    --bs-list-group-border-width: 1px;
+    --bs-list-group-border-width: 2px;
     --bs-list-group-border-radius: 0.375rem;
     --bs-list-group-item-padding-x: 1rem;
     --bs-list-group-item-padding-y: 0.5rem;
