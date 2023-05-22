@@ -18,7 +18,7 @@ function handleMouseDown(event) {
     // Start a new path
     context.beginPath();
     // Draw a filled circle (point) on the canvas
-    context.arc(coordin1 - 8, coordin2 - 8, 5, 0, Math.PI * 2);
+    context.arc(coordin1 , coordin2 , 5, 0, Math.PI * 2);
     // Fill the circle with the defined fill style
     context.fill();
     // Store the coordinates of the point in the points array
@@ -279,7 +279,7 @@ function startButton() {
               const { x, y } = clusters[i][j];
               context.fillStyle = color;
               context.beginPath();
-              context.arc(x - 8, y - 8, 5, 0, Math.PI * 2);
+              context.arc(x , y , 5, 0, Math.PI * 2);
               context.fill();
           }
       }
@@ -297,7 +297,7 @@ function startButton() {
       
           for (const point of cluster) {
             context.beginPath();
-            context.arc(point.x - 8, point.y - 8, 5, 0, Math.PI * 2);
+            context.arc(point.x , point.y , 5, 0, Math.PI * 2);
             context.fill();
           }
         }
@@ -327,7 +327,7 @@ function startButton() {
               // Set the fill style to the cluster color
               context.fillStyle = color;
               context.beginPath();
-              context.arc(x - 8, y - 8, 5, 0, Math.PI * 2);
+              context.arc(x , y , 5, 0, Math.PI * 2);
               context.fill();
           }
       }
