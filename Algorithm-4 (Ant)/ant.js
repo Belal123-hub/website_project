@@ -17,7 +17,7 @@ class City {
   draw() {
     ctx.beginPath();
     ctx.arc(this.x, this.y, 5, 0, 2 * Math.PI);
-    ctx.fillStyle = 'blue';
+    ctx.fillStyle = 'orange';
     ctx.fill();
     ctx.stroke();
   }
@@ -86,7 +86,7 @@ class Ant {
       ctx.lineTo(this.cities[this.tour[i]].x, this.cities[this.tour[i]].y);
     }
 
-    ctx.strokeStyle = 'blue';
+    ctx.strokeStyle = 'Orange';
     ctx.lineWidth = 2;  //route-width
     ctx.stroke();
   }
