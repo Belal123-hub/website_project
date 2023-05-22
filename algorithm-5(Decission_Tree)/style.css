@@ -9,17 +9,6 @@
 }
 
 
-
-/* body {
-    margin: 0;
-    padding: 0;
-
-    background-image: url('decission.jpg');
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    background-size:cover;
-} */
-
 .flex-wrapper {
     display: flex;
     align-items: center;
@@ -43,16 +32,6 @@ header > div p {
     margin-right: auto;
     width: max-content;
 }
-/* .logo {
-    width: 78px;
-    margin-top: 4px;
-}
-#left_logo {
-    margin-left: 28px;
-}
-#right_logo {
-    margin-right: 28px;
-} */
 
 .wrapper {
     display:inline-block;

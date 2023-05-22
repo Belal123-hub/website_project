@@ -3,21 +3,21 @@
 body{
   background-color: #1e1f29;
 }
-.dropdown {
+/* .dropdown {
   position: absolute;
-  top: 70px; /* Adjust the top position as needed */
-  left: 150px; /* Adjust the right position as needed */
+  top: 70px;  
+  left: 150px; 
   display: inline-block;
-}
+} */
 
 
-.dropdown button{
+/* .dropdown button{
   background-color:transparent ;
   border-radius: 25px;
   padding: 0.5em 1em;
   color: aliceblue;
-}
-.dropdown-content {
+} */
+/* .dropdown-content {
   position: absolute;
   top: 100%;
   left: 0;
@@ -26,7 +26,7 @@ body{
 .dropdown-content a:hover {
   background-color: purple;
   color: white;
-}
+} */
 
 .dropdown:hover .dropdown-content {
   display: flex;

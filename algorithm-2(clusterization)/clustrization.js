@@ -6,7 +6,7 @@ var points = [];   // Array to store the points
 
 /**
  * Event handler for the mousedown event on the canvas
- * @param {MouseEvent} event /*@ param: This annotation is used in JSDoc to document a function parameter
+ *  /*@ param: This annotation is used in JSDoc to document a function parameter
  *                            {MouseEvent}: This specifies the type of the parameter
  */
 function handleMouseDown(event) {
@@ -14,7 +14,7 @@ function handleMouseDown(event) {
     var coordin1 = event.clientX - canvas.offsetLeft;
     var coordin2 = event.clientY - canvas.offsetTop;
     // Set the fill style to black
-    context.fillStyle = 'pink';  // lets consider black 
+    context.fillStyle = 'pink';
     // Start a new path
     context.beginPath();
     // Draw a filled circle (point) on the canvas
@@ -25,6 +25,7 @@ function handleMouseDown(event) {
     points.push({ x: coordin1, y: coordin2 });
     console.log(points);
 }
+
     // Run k-means clustering
    function k_Means(data, n) 
    {
@@ -107,8 +108,8 @@ function meanShiftClustering(data, kernelBandwidth, convergenceThreshold) {
           let distance = euclideanDistance(point, data[i]);
           let weight = gaussianKernel(distance, kernelBandwidth);
 
-          numeratorSum[0] += data[i].X * weight;
-          numeratorSum[1] += data[i].Y * weight;
+          numeratorSum[0] += data[i].x * weight;
+          numeratorSum[1] += data[i].y * weight;
           denominatorSum += weight;
       }
 
@@ -180,6 +181,7 @@ function meanShiftClustering(data, kernelBandwidth, convergenceThreshold) {
 
   return clusterPoints;
 }
+
 function the_distance(point1, point2) {
     // Euclidean distance between two points
     return Math.sqrt((point1.x - point2.x) ** 2 + (point1.y - point2.y) ** 2);
@@ -302,33 +304,33 @@ function startButton() {
 
     } 
     if (algo=="mean-shift.js") {
-// Get the number of clusters from the input field
- number_of_clusters = parseInt(document.getElementById('clusterNum').value);
+      // Get the number of clusters from the input field
+      number_of_clusters = parseInt(document.getElementById('clusterNum').value);
 
-// Clear the canvas
-context.clearRect(0, 0, canvas.width, canvas.height);
+      // Clear the canvas
+      context.clearRect(0, 0, canvas.width, canvas.height);
 
-// Perform mean shift clustering on the points
- clusters = meanShiftClustering(points, 60, 0.0001);
+      // Perform mean shift clustering on the points
+      clusters = meanShiftClustering(points, 60, 0.0001);
 
-// Generate an array of distinct colors based on the number of clusters
-const colors = generateDistinctColors(number_of_clusters);
+      // Generate an array of distinct colors based on the number of clusters
+      var colors = generateDistinctColors(number_of_clusters);
 
-// Visualize the clusters with different colors
-for (let i = 0; i < clusters.length; i++) {
-    const color = colors[i % colors.length]; // Get the color based on the index
+      // Visualize the clusters with different colors
+      for (let i = 0; i < clusters.length; i++) {
+          const color = colors[i % colors.length]; // Get the color based on the index
 
-    for (let j = 0; j < clusters[i].length; j++) {
-        const x = clusters[i][j].X;
-        const y = clusters[i][j].Y;
+          for (let j = 0; j < clusters[i].length; j++) {
+              const x = clusters[i][j].x;
+              const y = clusters[i][j].y;
 
-        // Set the fill style to the cluster color
-        context.fillStyle = color;
-        context.beginPath();
-        context.arc(x - 8, y - 8, 8, 0, Math.PI * 2);
-        context.fill();
-    }
-}
+              // Set the fill style to the cluster color
+              context.fillStyle = color;
+              context.beginPath();
+              context.arc(x - 8, y - 8, 5, 0, Math.PI * 2);
+              context.fill();
+          }
+      }
     }
 }
 function get_color_rondomly() {
