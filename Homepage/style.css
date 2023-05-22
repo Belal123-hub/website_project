@@ -1,0 +1,47 @@
+body {
+    font-family: Tahoma, Verdana, sans-serif;
+  }
+
+#container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #222;
+    border: 1px solid #444;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+    padding-bottom: 30px;
+    margin-bottom: 70px;
+  }
+
+h1 {
+    color:antiquewhite;
+    font-family: Tahoma, Verdana, sans-serif;
+}
+
+h2 {
+    color:rgb(85, 121, 121);
+    font-family: Tahoma, Verdana, sans-serif;
+    
+}
+
+p {
+    color:antiquewhite;
+}
+
+.image-class {
+    height: 250px;
+    width: 500px;
+}
+
+.image-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+img{
+    box-shadow: 
+    0 2px 4px rgba(0, 0, 0, 0.4),
+    0 6px 10px rgba(0, 0, 0, 0.3);
+}
